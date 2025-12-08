@@ -12,7 +12,7 @@ const floatingAnimationVariants = {
         transition: {
             duration: 3 + (index % 2),
             repeat: Infinity,
-            ease: "easeInOut",
+            ease: "easeInOut" as const,
             delay: index * 0.1,
         },
     }),
