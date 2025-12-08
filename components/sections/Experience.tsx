@@ -42,15 +42,15 @@ export function Experience() {
 
                             <motion.div
                                 className="md:w-1/2 pl-12 md:pl-0"
-                                animate={{ y: [0, -5, 0] }}
-                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: index * 0.5 }}
+                                animate={{ y: [0, -10, 0] }}
+                                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" as const, delay: index * 0.2 }}
                             >
                                 <Card className="relative overflow-hidden bg-neutral-900/50 border border-white/10 backdrop-blur-md">
                                     <CardHeader>
                                         <div className="flex flex-col gap-1">
                                             <div className="flex justify-between items-start">
                                                 <CardTitle className="text-xl text-white font-bold">{exp.role}</CardTitle>
-                                                <Badge variant="outline" className="border-primary/50 text-primary w-fit text-xs px-2 py-0.5">{exp.period}</Badge>
+                                                <Badge variant="outline" className="border-primary/50 text-white bg-primary/10 w-fit text-xs px-2 py-0.5">{exp.period}</Badge>
                                             </div>
                                             <CardDescription className="text-base font-medium text-cyan-400">{exp.company}</CardDescription>
                                         </div>
