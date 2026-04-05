@@ -22,9 +22,9 @@ export async function addExperience(formData: FormData) {
 
     revalidatePath("/");
     revalidatePath("/admin/experience");
-    return { success: true };
+    return;
   } catch (error) {
-    return { error: "Failed to add experience" };
+    return;
   }
 }
 
@@ -33,8 +33,8 @@ export async function deleteExperience(id: string) {
     await prisma.experience.delete({ where: { id } });
     revalidatePath("/");
     revalidatePath("/admin/experience");
-    return { success: true };
+    return;
   } catch (error) {
-    return { error: "Failed to delete experience" };
+    return;
   }
 }

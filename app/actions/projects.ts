@@ -27,9 +27,9 @@ export async function addProject(formData: FormData) {
 
     revalidatePath("/");
     revalidatePath("/admin/projects");
-    return { success: true };
+    return;
   } catch (error) {
-    return { error: "Failed to add project" };
+    return;
   }
 }
 
@@ -38,8 +38,8 @@ export async function deleteProject(id: string) {
     await prisma.project.delete({ where: { id } });
     revalidatePath("/");
     revalidatePath("/admin/projects");
-    return { success: true };
+    return;
   } catch (error) {
-    return { error: "Failed to delete project" };
+    return;
   }
 }

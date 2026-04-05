@@ -2,10 +2,16 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Mail, Github, Linkedin, Twitter } from "lucide-react";
+import { Mail, Github, Linkedin, Instagram } from "lucide-react";
 import Link from "next/link";
+import { type PersonalInfo } from "@prisma/client";
 
-export function Contact() {
+export function Contact({ personalInfo }: { personalInfo: PersonalInfo | null }) {
+    const email = personalInfo?.email || "farid06hasfindra@gmail.com";
+    const githubUrl = personalInfo?.githubUrl || "https://github.com";
+    const linkedinUrl = personalInfo?.linkedinUrl || "https://linkedin.com";
+    const instagramUrl = personalInfo?.instagramUrl || "https://instagram.com";
+
     return (
         <section id="contact" className="py-20 relative overflow-hidden bg-[#030014]">
             {/* Background glow */}
@@ -25,25 +31,25 @@ export function Contact() {
                         </p>
 
                         <div className="space-y-4">
-                            <a href="mailto:farid06hasfindra@gmail.com" className="flex items-center gap-4 p-4 rounded-lg bg-neutral-900/50 hover:bg-neutral-800 transition-colors border border-white/5 group">
+                            <a href={`mailto:${email}`} className="flex items-center gap-4 p-4 rounded-lg bg-neutral-900/50 hover:bg-neutral-800 transition-colors border border-white/5 group">
                                 <div className="bg-primary/20 p-3 rounded-full group-hover:bg-primary/30 transition-colors">
                                     <Mail className="h-6 w-6 text-primary" />
                                 </div>
                                 <div>
                                     <p className="font-medium text-white">Email Me</p>
-                                    <p className="text-neutral-400">farid06hasfindra@gmail.com</p>
+                                    <p className="text-neutral-400">{email}</p>
                                 </div>
                             </a>
 
                             <div className="flex gap-4 mt-8">
                                 <Button variant="outline" size="icon" className="border-neutral-700 bg-transparent hover:bg-white/10 text-white" asChild>
-                                    <Link href="https://github.com" target="_blank"><Github className="h-5 w-5" /></Link>
+                                    <Link href={githubUrl} target="_blank"><Github className="h-5 w-5" /></Link>
                                 </Button>
                                 <Button variant="outline" size="icon" className="border-neutral-700 bg-transparent hover:bg-white/10 text-white" asChild>
-                                    <Link href="https://linkedin.com" target="_blank"><Linkedin className="h-5 w-5" /></Link>
+                                    <Link href={linkedinUrl} target="_blank"><Linkedin className="h-5 w-5" /></Link>
                                 </Button>
                                 <Button variant="outline" size="icon" className="border-neutral-700 bg-transparent hover:bg-white/10 text-white" asChild>
-                                    <Link href="https://twitter.com" target="_blank"><Twitter className="h-5 w-5" /></Link>
+                                    <Link href={instagramUrl} target="_blank"><Instagram className="h-5 w-5" /></Link>
                                 </Button>
                             </div>
                         </div>

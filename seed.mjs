@@ -5,9 +5,12 @@ const prisma = new PrismaClient();
 const PERSONAL_INFO = {
     name: "Farid Hasfindra",
     title: "AI Engineer",
-    tagline: "Building production ready AI systems that transform complex data into seamless, high-impact user experiences.",
-    description: "I specialize in building scalable AI solutions and integrating them into modern web applications. From natural language processing to computer vision, I bring data to life.",
+    tagline: "Building production-ready AI systems that transform complex data into seamless, high-impact user experiences.",
+    description: "I am a dedicated AI Engineer with a passion for building intelligent systems that solve real-world problems. With expertise in machine learning, natural language processing, and full-stack development, I focus on creating scalable and efficient solutions that deliver value to users and businesses alike.",
     email: "farid06hasfindra@gmail.com",
+    githubUrl: "https://github.com/farid-hasfindra",
+    linkedinUrl: "https://linkedin.com/in/farid-hasfindra",
+    instagramUrl: "https://instagram.com/farid-hasfindra",
 };
 
 const SKILLS = [

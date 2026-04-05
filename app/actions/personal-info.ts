@@ -11,19 +11,27 @@ export async function updatePersonalInfo(formData: FormData) {
       tagline: formData.get("tagline") as string,
       description: formData.get("description") as string,
       email: formData.get("email") as string,
+      githubUrl: formData.get("githubUrl") as string,
+      linkedinUrl: formData.get("linkedinUrl") as string,
+      instagramUrl: formData.get("instagramUrl") as string,
     };
 
-    await prisma.personalInfo.update({
+    console.log("Updating Personal Info with data:", data);
+
+    await prisma.personalInfo.upsert({
       where: { id: 1 },
-      data,
+      update: data,
+      create: { id: 1, ...data },
     });
+
+    console.log("Personal Info updated successfully");
 
     revalidatePath("/");
     revalidatePath("/admin/personal-info");
     
-    return { success: true };
+    return;
   } catch (error) {
-    console.error(error);
-    return { error: "Failed to update personal info" };
+    console.error("Error updating personal info:", error);
+    throw error; // Re-throw to see it in terminal
   }
 }

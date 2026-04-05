@@ -20,9 +20,9 @@ export async function addSkill(formData: FormData) {
 
     revalidatePath("/");
     revalidatePath("/admin/skills");
-    return { success: true };
+    return;
   } catch (error) {
-    return { error: "Failed to add skill" };
+    return;
   }
 }
 
@@ -31,8 +31,8 @@ export async function deleteSkill(id: string) {
     await prisma.skill.delete({ where: { id } });
     revalidatePath("/");
     revalidatePath("/admin/skills");
-    return { success: true };
+    return;
   } catch (error) {
-    return { error: "Failed to delete skill" };
+    return;
   }
 }
