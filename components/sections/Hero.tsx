@@ -3,10 +3,10 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { PERSONAL_INFO } from "@/lib/data";
 import { Spotlight } from "@/components/ui/spotlight";
+import type { PersonalInfo } from "@prisma/client";
 
-export function Hero() {
+export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
     return (
         <section id="hero" className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20 bg-[#030014]">
             {/* Spotlight Effect */}
@@ -31,13 +31,13 @@ export function Hero() {
                     </div>
 
                     <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-neutral-400 pb-4">
-                        {PERSONAL_INFO.name}
+                        {personalInfo.name}
                     </h1>
                     <h2 className="text-2xl md:text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 animate-gradient-x">
-                        {PERSONAL_INFO.title}
+                        {personalInfo.title}
                     </h2>
                     <p className="text-neutral-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-                        {PERSONAL_INFO.tagline}
+                        {personalInfo.tagline}
                     </p>
                 </motion.div>
 
@@ -49,7 +49,7 @@ export function Hero() {
                 >
                     <Button size="lg" className="rounded-full px-8 text-lg bg-primary text-white hover:bg-primary/80 transition-all font-semibold shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:shadow-[0_0_30px_rgba(139,92,246,0.5)]" asChild>
                         <Link href="#projects">
-                            View Work
+                            Portfolio
                         </Link>
                     </Button>
                     <Button size="lg" variant="outline" className="rounded-full px-8 text-lg border-neutral-700 bg-black/50 backdrop-blur-md hover:bg-neutral-900 transition-all text-white hover:border-neutral-500" asChild>

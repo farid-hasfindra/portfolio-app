@@ -3,7 +3,8 @@
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { SKILLS } from "@/lib/data";
+import type { Skill } from "@prisma/client";
+import * as LucideIcons from "lucide-react";
 
 const floatingAnimationVariants = {
     initial: { y: 0 },
@@ -18,7 +19,7 @@ const floatingAnimationVariants = {
     }),
 };
 
-export function Skills() {
+export function Skills({ skills }: { skills: Skill[] }) {
     return (
         <section id="skills" className="py-20 bg-[#030014] relative">
             <div className="container px-4 md:px-6">
@@ -30,7 +31,7 @@ export function Skills() {
                     className="text-center mb-12"
                 >
                     <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl text-white">
-                        Technologies & Tools
+                        My Skills
                     </h2>
                     <p className="mt-4 text-neutral-400 max-w-2xl mx-auto">
                         My technical arsenal for building intelligent systems.
@@ -38,8 +39,8 @@ export function Skills() {
                 </motion.div>
 
                 <ul className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
-                    {SKILLS.map((skill, index) => {
-                        const Icon = skill.icon;
+                    {skills.map((skill, index) => {
+                        const IconComponent = (LucideIcons as any)[skill.icon] || LucideIcons.Code2;
                         return (
                             <motion.li
                                 key={index}
@@ -57,7 +58,7 @@ export function Skills() {
                                 >
                                     <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:border-primary/50 transition-colors h-14 flex items-center px-4">
                                         <div className="flex items-center gap-3">
-                                            <Icon className="w-6 h-6 text-primary" />
+                                            <IconComponent className="w-6 h-6 text-primary" />
                                             <span className="font-medium text-neutral-200">{skill.name}</span>
                                         </div>
                                     </Card>

@@ -3,9 +3,9 @@
 import { motion } from "framer-motion";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { EXPERIENCE } from "@/lib/data";
+import type { Experience as ExperienceType } from "@prisma/client";
 
-export function Experience() {
+export function Experience({ experience }: { experience: ExperienceType[] }) {
     return (
         <section id="experience" className="py-20 bg-[#030014] relative no-visible-scrollbar overflow-hidden">
             {/* Background glow */}
@@ -27,7 +27,7 @@ export function Experience() {
                     {/* Timeline line */}
                     <div className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary/50 via-primary/20 to-transparent md:-translate-x-1/2" />
 
-                    {EXPERIENCE.map((exp, index) => (
+                    {experience.map((exp, index) => (
                         <motion.div
                             key={index}
                             initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}

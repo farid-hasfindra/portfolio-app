@@ -4,15 +4,27 @@ import { Skills } from "@/components/sections/Skills";
 import { Projects } from "@/components/sections/Projects";
 import { Experience } from "@/components/sections/Experience";
 import { Contact } from "@/components/sections/Contact";
+import { prisma } from "@/lib/db";
 
-export default function Home() {
+export const revalidate = 0;
+
+export default async function Home() {
+  const [personalInfo, skills, projects, experience] = await Promise.all([
+    prisma.personalInfo.findFirst(),
+    prisma.skill.findMany({ orderBy: { order: "asc" } }),
+    prisma.project.findMany({ orderBy: { order: "asc" } }),
+    prisma.experience.findMany({ orderBy: { order: "asc" } }),
+  ]);
+
+  if (!personalInfo) return null;
+
   return (
     <main className="min-h-screen bg-background text-foreground overflow-x-hidden selection:bg-primary selection:text-white">
       <Navbar />
-      <Hero />
-      <Skills />
-      <Projects />
-      <Experience />
+      <Hero personalInfo={personalInfo} />
+      <Skills skills={skills} />
+      <Projects projects={projects} />
+      <Experience experience={experience} />
       <Contact />
     </main>
   );
