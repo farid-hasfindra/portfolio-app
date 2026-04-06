@@ -1,104 +1,107 @@
 "use client";
 
+import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { Mail, Github, Linkedin, Instagram, Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Mail, Github, Linkedin, Instagram } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast-provider";
 import Link from "next/link";
-import { type PersonalInfo } from "@prisma/client";
 
-export function Contact({ personalInfo }: { personalInfo: PersonalInfo | null }) {
-    const email = personalInfo?.email || "farid06hasfindra@gmail.com";
-    const githubUrl = personalInfo?.githubUrl || "https://github.com";
-    const linkedinUrl = personalInfo?.linkedinUrl || "https://linkedin.com";
-    const instagramUrl = personalInfo?.instagramUrl || "https://instagram.com";
+interface ContactProps {
+    personalInfo: any;
+}
+
+export function Contact({ personalInfo }: ContactProps) {
+    const normalizeUrl = (url: string | null) => {
+        if (!url || url === "#") return "#";
+        return url.startsWith("http") ? url : `https://${url}`;
+    };
+
+    const socialLinks = [
+        { icon: Github, href: normalizeUrl(personalInfo.githubUrl), label: "GitHub", color: "hover:text-white hover:bg-neutral-800" },
+        { icon: Linkedin, href: normalizeUrl(personalInfo.linkedinUrl), label: "LinkedIn", color: "hover:text-blue-400 hover:bg-blue-500/10" },
+        { icon: Instagram, href: normalizeUrl(personalInfo.instagramUrl), label: "Instagram", color: "hover:text-pink-400 hover:bg-pink-500/10" }
+    ];
 
     return (
-        <section id="contact" className="py-20 relative overflow-hidden bg-[#030014]">
-            {/* Background glow */}
-            <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[100px] -z-10" />
+        <section id="contact" className="pt-24 pb-20 relative bg-[#030014] overflow-hidden">
+            {/* Ambient Background Lights */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[100px] -z-10 animate-pulse transform-gpu will-change-transform" />
+            
+            <div className="container px-4 md:px-6 relative z-10">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="max-w-2xl mx-auto transform-gpu will-change-transform"
+                >
+                    <div className="relative group p-[1px] rounded-[2.5rem] bg-gradient-to-br from-white/10 via-white/[0.02] to-cyan-500/10 shadow-2xl overflow-hidden">
+                        <div className="relative z-10 bg-[#030014]/90 backdrop-blur-3xl rounded-[2.4rem] p-8 md:p-14 flex flex-col items-center text-center">
+                            {/* Decorative Label */}
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-[9px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-6">
+                                <span className="w-1 h-1 rounded-full bg-cyan-400 animate-ping" />
+                                Available for chat
+                            </div>
 
-            <div className="container px-4 md:px-6">
-                <div className="grid md:grid-cols-2 gap-12 items-center">
-                    <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: false }}
-                        transition={{ duration: 0.5 }}
-                    >
-                        <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl mb-6 text-white">Let&apos;s Work Together</h2>
-                        <p className="text-neutral-400 mb-8 text-lg">
-                            I&apos;m always open to discussing product design work or partnership opportunities.
-                        </p>
+                            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tighter text-white mb-4 leading-tight">
+                                Let&apos;s <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-400">Connect</span>
+                            </h2>
+                            
+                            <p className="text-neutral-400 text-sm md:text-base mb-10 max-w-lg leading-relaxed font-medium">
+                                Open for new opportunities. Ready to help your team build high-performance AI solutions.
+                            </p>
 
-                        <div className="space-y-4">
-                            <a href={`mailto:${email}`} className="flex items-center gap-4 p-4 rounded-lg bg-neutral-900/50 hover:bg-neutral-800 transition-colors border border-white/5 group">
-                                <div className="bg-primary/20 p-3 rounded-full group-hover:bg-primary/30 transition-colors">
-                                    <Mail className="h-6 w-6 text-primary" />
+                            {/* Main Contact Tile */}
+                            <motion.a 
+                                href={`mailto:${personalInfo.email}`}
+                                whileHover={{ y: -2 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="relative group/mail w-full max-w-sm p-[1px] rounded-2xl bg-gradient-to-r from-white/10 to-transparent hover:from-cyan-500/40 transition-all duration-500 mb-10"
+                            >
+                                <div className="bg-white/[0.02] backdrop-blur-md rounded-2xl p-5 flex items-center gap-4 transition-colors group-hover/mail:bg-white/[0.04]">
+                                    <div className="h-12 w-12 rounded-xl bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20 group-hover/mail:bg-cyan-500/20 group-hover/mail:border-cyan-500/40 transition-all shrink-0">
+                                        <Mail className="h-6 w-6 text-cyan-400" />
+                                    </div>
+                                    <div className="flex flex-col items-start overflow-hidden">
+                                        <span className="text-[9px] uppercase tracking-[0.3em] text-neutral-500 font-bold mb-0.5">Email Address</span>
+                                        <span className="text-base md:text-lg text-white font-bold tracking-tight truncate w-full">
+                                            {personalInfo.email}
+                                        </span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="font-medium text-white">Email Me</p>
-                                    <p className="text-neutral-400">{email}</p>
-                                </div>
-                            </a>
+                            </motion.a>
 
-                            <div className="flex gap-4 mt-8">
-                                <Button variant="outline" size="icon" className="border-neutral-700 bg-transparent hover:bg-white/10 text-white" asChild>
-                                    <Link href={githubUrl} target="_blank"><Github className="h-5 w-5" /></Link>
-                                </Button>
-                                <Button variant="outline" size="icon" className="border-neutral-700 bg-transparent hover:bg-white/10 text-white" asChild>
-                                    <Link href={linkedinUrl} target="_blank"><Linkedin className="h-5 w-5" /></Link>
-                                </Button>
-                                <Button variant="outline" size="icon" className="border-neutral-700 bg-transparent hover:bg-white/10 text-white" asChild>
-                                    <Link href={instagramUrl} target="_blank"><Instagram className="h-5 w-5" /></Link>
-                                </Button>
+                            {/* Social Grid */}
+                            <div className="flex flex-wrap justify-center gap-3">
+                                {socialLinks.map((social, idx) => (
+                                    <motion.div
+                                        key={idx}
+                                        whileHover={{ y: -3 }}
+                                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                    >
+                                        <Button 
+                                            variant="outline" 
+                                            size="sm" 
+                                            className={cn(
+                                                "h-11 px-6 rounded-xl border-white/5 bg-white/[0.01] text-neutral-400 transition-all duration-300 gap-2.5 font-bold text-[11px] uppercase tracking-wider",
+                                                social.color
+                                            )} 
+                                            asChild
+                                        >
+                                            <Link href={social.href} target="_blank" rel="noopener noreferrer">
+                                                <social.icon size={16} />
+                                                <span>{social.label}</span>
+                                            </Link>
+                                        </Button>
+                                    </motion.div>
+                                ))}
                             </div>
                         </div>
-                    </motion.div>
-
-                    {/* Simple Contact Form */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: false }}
-                        transition={{ duration: 0.5, delay: 0.2 }}
-                        className="bg-neutral-900/30 border border-white/10 rounded-xl p-8 shadow-2xl backdrop-blur-md"
-                    >
-                        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-                            <div className="space-y-2">
-                                <label htmlFor="name" className="text-sm font-medium text-neutral-300">Name</label>
-                                <input
-                                    id="name"
-                                    className="w-full h-10 rounded-md border border-neutral-800 bg-black/50 px-3 py-2 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                                    placeholder="Your Name"
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <label htmlFor="email" className="text-sm font-medium text-neutral-300">Email</label>
-                                <input
-                                    id="email"
-                                    type="email"
-                                    className="w-full h-10 rounded-md border border-neutral-800 bg-black/50 px-3 py-2 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                                    placeholder="john@example.com"
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <label htmlFor="message" className="text-sm font-medium text-neutral-300">Message</label>
-                                <textarea
-                                    id="message"
-                                    className="w-full min-h-[120px] rounded-md border border-neutral-800 bg-black/50 px-3 py-2 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                                    placeholder="Tell me about your project..."
-                                />
-                            </div>
-                            <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white font-medium shadow-[0_0_20px_rgba(139,92,246,0.2)]">Send Message</Button>
-                        </form>
-                    </motion.div>
-                </div>
+                    </div>
+                </motion.div>
             </div>
-
-            <footer className="mt-20 border-t border-neutral-800 py-8 text-center text-sm text-muted-foreground">
-                <p>&copy; {new Date().getFullYear()} Farid Hasfindra. All rights reserved.</p>
-                <p className="mt-2 text-xs text-neutral-500">Built with Next.js, Tailwind CSS & Framer Motion.</p>
-            </footer>
         </section>
     );
 }

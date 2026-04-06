@@ -12,7 +12,7 @@ export default async function ProjectsAdmin() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <Code size={16} className="text-pink-400" />
+          <Code size={16} className="text-cyan-400" />
           <span className="text-xs text-neutral-500 uppercase tracking-widest font-semibold">Portfolio</span>
         </div>
         <h1 className="text-3xl font-bold text-white">Projects Management</h1>

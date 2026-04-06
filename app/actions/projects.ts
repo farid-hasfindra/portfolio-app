@@ -9,11 +9,12 @@ export async function addProject(formData: FormData) {
     const description = formData.get("description") as string;
     const tagsString = formData.get("tags") as string;
     const image = formData.get("image") as string;
+    const gallerySerialized = formData.get("gallery") as string;
     const githubUrl = formData.get("githubUrl") as string;
     const demoUrl = formData.get("demoUrl") as string;
     
-    // Defaulting to empty image if empty because the schema doesn't specify optional yet
     const tags = tagsString.split(",").map(tag => tag.trim());
+    const gallery = gallerySerialized ? JSON.parse(gallerySerialized) : [];
 
     const maxOrderProject = await prisma.project.findFirst({
       orderBy: { order: "desc" },
@@ -22,7 +23,16 @@ export async function addProject(formData: FormData) {
     const newOrder = maxOrderProject ? maxOrderProject.order + 1 : 0;
 
     await prisma.project.create({
-      data: { title, description, tags, image, githubUrl, demoUrl, order: newOrder },
+      data: { 
+        title, 
+        description, 
+        tags, 
+        image, 
+        gallery,
+        githubUrl, 
+        demoUrl, 
+        order: newOrder 
+      },
     });
 
     revalidatePath("/");

@@ -21,7 +21,7 @@ export function AdminSidebar() {
       {/* Logo */}
       <div className="p-6 border-b border-white/5">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-600 to-blue-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
             <Code size={16} className="text-white" />
           </div>
           <div>
@@ -41,16 +41,16 @@ export function AdminSidebar() {
               href={href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group ${
                 isActive
-                  ? "bg-gradient-to-r from-purple-600/20 to-cyan-600/10 text-white border border-purple-500/20 shadow-lg shadow-purple-500/5"
+                  ? "bg-gradient-to-r from-cyan-600/20 to-blue-600/10 text-white border border-cyan-500/20 shadow-lg shadow-cyan-500/5"
                   : "text-neutral-400 hover:text-white hover:bg-white/5"
               }`}
             >
               <Icon
                 size={18}
-                className={isActive ? "text-purple-400" : "text-neutral-500 group-hover:text-neutral-300"}
+                className={isActive ? "text-cyan-400" : "text-neutral-500 group-hover:text-neutral-300"}
               />
               {label}
-              {isActive && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-purple-400"></span>}
+              {isActive && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-cyan-400"></span>}
             </Link>
           );
         })}

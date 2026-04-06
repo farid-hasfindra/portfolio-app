@@ -12,7 +12,7 @@ export default async function PersonalInfoAdmin() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <User size={16} className="text-purple-400" />
+          <User size={16} className="text-cyan-400" />
           <span className="text-xs text-neutral-500 uppercase tracking-widest font-semibold">Identity</span>
         </div>
         <h1 className="text-3xl font-bold text-white">Personal Information</h1>

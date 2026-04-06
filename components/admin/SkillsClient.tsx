@@ -132,7 +132,7 @@ export function SkillsClient({ initialSkills }: SkillsClientProps) {
                             <Input
                                 name="name" required
                                 placeholder="e.g. TensorFlow"
-                                className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 rounded-xl h-10"
+                                className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 rounded-xl h-10 focus-visible:ring-cyan-500/20 focus-visible:border-cyan-500/50"
                             />
                         </div>
                         <div className="space-y-2">
@@ -146,13 +146,13 @@ export function SkillsClient({ initialSkills }: SkillsClientProps) {
                             <Input
                                 name="icon"
                                 placeholder="e.g. Brain (optional, default: Code2)"
-                                className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 rounded-xl h-10"
+                                className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 rounded-xl h-10 focus-visible:ring-cyan-500/20 focus-visible:border-cyan-500/50"
                             />
                         </div>
                         <Button 
                             type="submit" 
                             disabled={isPending}
-                            className="w-full bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-500 hover:to-cyan-600 text-white rounded-xl font-semibold shadow-lg shadow-cyan-500/20"
+                            className="w-full bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-500 hover:to-blue-600 text-white rounded-xl font-semibold shadow-lg shadow-cyan-500/20 active:scale-[0.98] transition-all"
                         >
                             {isPending ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />

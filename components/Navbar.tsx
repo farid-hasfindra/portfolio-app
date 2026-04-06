@@ -21,7 +21,7 @@ export function Navbar() {
 
     useEffect(() => {
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
+            setIsScrolled(window.scrollY > 20);
         };
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
@@ -30,39 +30,43 @@ export function Navbar() {
     return (
         <header
             className={cn(
-                "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out",
-                isScrolled
-                    ? "bg-[#030014]/80 backdrop-blur-md border-b border-white/10 shadow-sm py-2"
-                    : "bg-transparent py-4"
+                "fixed top-0 left-0 right-0 z-50 px-4 md:px-0 transition-all duration-500",
+                isScrolled ? "pt-4" : "pt-6"
             )}
         >
-            <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
-                <Link href="/" className="text-xl font-bold tracking-tighter hover:opacity-80 transition-opacity text-white">
-                    My Portfolio
+            <div 
+                className={cn(
+                    "container mx-auto px-6 h-14 flex items-center justify-between transition-all duration-500 rounded-full border",
+                    isScrolled 
+                        ? "bg-black/60 backdrop-blur-xl border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.5)] max-w-4xl" 
+                        : "bg-transparent border-transparent max-w-7xl"
+                )}
+            >
+                <Link href="/" className="text-xl font-bold tracking-tighter text-white hover:text-cyan-400 transition-colors group">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-neutral-500 group-hover:from-cyan-400 group-hover:to-blue-400 transition-all duration-500">
+                        My Portfolio
+                    </span>
                 </Link>
 
                 {/* Desktop Nav */}
-                <nav className="hidden md:flex items-center gap-6">
+                <nav className="hidden md:flex items-center gap-8">
                     {navItems.map((item) => (
                         <Link
                             key={item.href}
                             href={item.href}
-                            className="text-sm font-medium text-white hover:text-primary transition-colors"
+                            className="text-[13px] font-semibold text-neutral-400 hover:text-cyan-400 transition-all hover:scale-105"
                         >
                             {item.name}
                         </Link>
                     ))}
-                    <Button variant="default" size="sm" asChild className="bg-primary hover:bg-primary/90 text-white">
-                        <Link href="/resume.pdf">Resume</Link>
-                    </Button>
                 </nav>
 
                 {/* Mobile Toggle */}
                 <button
-                    className="md:hidden p-2 text-white"
+                    className="md:hidden p-2 text-white hover:text-cyan-400 transition-colors"
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 >
-                    {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                    {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
                 </button>
             </div>
 
@@ -80,15 +84,12 @@ export function Navbar() {
                                 <Link
                                     key={item.href}
                                     href={item.href}
-                                    className="text-sm font-medium text-white hover:text-primary transition-colors py-2"
+                                    className="text-sm font-medium text-white hover:text-cyan-400 transition-colors py-2"
                                     onClick={() => setMobileMenuOpen(false)}
                                 >
                                     {item.name}
                                 </Link>
                             ))}
-                            <Button variant="default" size="sm" className="w-full bg-primary text-white">
-                                Resume
-                            </Button>
                         </div>
                     </motion.div>
                 )}

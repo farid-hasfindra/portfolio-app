@@ -12,7 +12,7 @@ export default async function ExperienceAdmin() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <Briefcase size={16} className="text-amber-400" />
+          <Briefcase size={16} className="text-cyan-400" />
           <span className="text-xs text-neutral-500 uppercase tracking-widest font-semibold">Career History</span>
         </div>
         <h1 className="text-3xl font-bold text-white">Experience Management</h1>

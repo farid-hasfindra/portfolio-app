@@ -43,7 +43,8 @@ model Project {
   title       String
   description String
   tags        String[]
-  image       String
+  image       String   // Thumbnail
+  gallery     String[] @default([]) // Multiple screenshots
   demoUrl     String
   githubUrl   String
   order       Int      @default(0)

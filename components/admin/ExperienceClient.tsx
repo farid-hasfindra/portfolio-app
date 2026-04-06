@@ -99,7 +99,6 @@ export function ExperienceClient({ initialExperience }: ExperienceClientProps) {
             const newExperiences = arrayMove(experiences, oldIndex, newIndex);
             setExperiences(newExperiences);
 
-            // Update in DB
             const items = newExperiences.map((e: ExperienceItem, index: number) => ({
                 id: e.id,
                 order: index,
@@ -108,7 +107,7 @@ export function ExperienceClient({ initialExperience }: ExperienceClientProps) {
             const result = await reorderExperience(items);
             if (!result.success) {
                 showToast(result.message, "error");
-                setExperiences(experiences); // Revert
+                setExperiences(experiences);
             }
         }
     }
@@ -119,12 +118,11 @@ export function ExperienceClient({ initialExperience }: ExperienceClientProps) {
 
     return (
         <div className="grid gap-8 lg:grid-cols-5">
-            {/* Add Form */}
             <div className="lg:col-span-2">
                 <div className="rounded-2xl bg-white/[0.03] border border-white/8 p-6 space-y-5">
                     <div>
                         <h3 className="font-semibold text-white flex items-center gap-2">
-                            <Plus size={16} className="text-orange-400" /> Add Experience
+                            <Plus size={16} className="text-cyan-400" /> Add Experience
                         </h3>
                         <p className="text-xs text-neutral-500 mt-1">Add your career milestones.</p>
                     </div>
@@ -133,28 +131,28 @@ export function ExperienceClient({ initialExperience }: ExperienceClientProps) {
                             <div className="space-y-2">
                                 <Label className="text-neutral-300 text-sm">Company</Label>
                                 <Input name="company" required placeholder="e.g. Google"
-                                    className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 rounded-xl h-10" />
+                                    className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 rounded-xl h-10 focus-visible:ring-cyan-500/20 focus-visible:border-cyan-500/50" />
                             </div>
                             <div className="space-y-2">
                                 <Label className="text-neutral-300 text-sm">Role</Label>
                                 <Input name="role" required placeholder="e.g. AI Engineer"
-                                    className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 rounded-xl h-10" />
+                                    className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 rounded-xl h-10 focus-visible:ring-cyan-500/20 focus-visible:border-cyan-500/50" />
                             </div>
                         </div>
                         <div className="space-y-2">
                             <Label className="text-neutral-300 text-sm italic">Period (e.g. 2022 - Present)</Label>
                             <Input name="period" required placeholder="2022 - 2024"
-                                className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 rounded-xl h-10" />
+                                className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 rounded-xl h-10 focus-visible:ring-cyan-500/20 focus-visible:border-cyan-500/50" />
                         </div>
                         <div className="space-y-2">
                             <Label className="text-neutral-300 text-sm">Description</Label>
                             <Textarea name="description" required placeholder="Key responsibilities and achievements..."
-                                className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 rounded-xl resize-none min-h-[100px]" />
+                                className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 rounded-xl resize-none min-h-[100px] focus-visible:ring-cyan-500/20 focus-visible:border-cyan-500/50" />
                         </div>
                         <Button 
                             type="submit" 
                             disabled={isPending}
-                            className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-500 hover:to-orange-600 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/20"
+                            className="w-full bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-500 hover:to-blue-600 text-white rounded-xl font-semibold shadow-lg shadow-cyan-500/20 active:scale-[0.98] transition-all"
                         >
                             {isPending ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -166,7 +164,6 @@ export function ExperienceClient({ initialExperience }: ExperienceClientProps) {
                 </div>
             </div>
 
-            {/* List */}
             <div className="lg:col-span-3 space-y-4">
                 <h3 className="font-semibold text-white">Career History ({experiences.length})</h3>
                 <DndContext
@@ -179,37 +176,39 @@ export function ExperienceClient({ initialExperience }: ExperienceClientProps) {
                             {experiences.map(exp => {
                                 const isDeleting = deletingId === exp.id;
                                 return (
-                                    <SortableItem key={exp.id} id={exp.id}>
-                                        <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-white/10 transition-all group relative">
-                                            <div className="flex items-start justify-between gap-4">
-                                                <div className="space-y-1">
-                                                    <div className="flex items-center gap-2 text-orange-400">
-                                                        <Briefcase size={14} />
-                                                        <span className="text-xs font-bold uppercase tracking-wider">{exp.company}</span>
+                                    <div key={exp.id}>
+                                        <SortableItem id={exp.id}>
+                                            <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-white/10 transition-all group relative">
+                                                <div className="flex items-start justify-between gap-4">
+                                                    <div className="space-y-1">
+                                                        <div className="flex items-center gap-2 text-cyan-400">
+                                                            <Briefcase size={14} />
+                                                            <span className="text-xs font-bold uppercase tracking-wider">{exp.company}</span>
+                                                        </div>
+                                                        <h4 className="font-bold text-white text-base">{exp.role}</h4>
+                                                        <div className="flex items-center gap-2 text-neutral-500 text-xs mt-1">
+                                                            <Calendar size={12} />
+                                                            <span>{exp.period}</span>
+                                                        </div>
+                                                        <p className="text-neutral-400 text-xs mt-2 leading-relaxed">{exp.description}</p>
                                                     </div>
-                                                    <h4 className="font-bold text-white text-base">{exp.role}</h4>
-                                                    <div className="flex items-center gap-2 text-neutral-500 text-xs mt-1">
-                                                        <Calendar size={12} />
-                                                        <span>{exp.period}</span>
-                                                    </div>
-                                                    <p className="text-neutral-400 text-xs mt-2 leading-relaxed">{exp.description}</p>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        onClick={() => handleDelete(exp.id)}
+                                                        disabled={isDeleting}
+                                                        className="p-1.5 rounded-lg text-neutral-600 hover:text-red-400 hover:bg-red-500/10 transition-all opacity-0 group-hover:opacity-100"
+                                                    >
+                                                        {isDeleting ? (
+                                                            <Loader2 className="h-4 w-4 animate-spin text-red-400" />
+                                                        ) : (
+                                                            <Trash2 size={16} />
+                                                        )}
+                                                    </Button>
                                                 </div>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={() => handleDelete(exp.id)}
-                                                    disabled={isDeleting}
-                                                    className="p-1.5 rounded-lg text-neutral-600 hover:text-red-400 hover:bg-red-500/10 transition-all opacity-0 group-hover:opacity-100"
-                                                >
-                                                    {isDeleting ? (
-                                                        <Loader2 className="h-4 w-4 animate-spin text-red-400" />
-                                                    ) : (
-                                                        <Trash2 size={16} />
-                                                    )}
-                                                </Button>
                                             </div>
-                                        </div>
-                                    </SortableItem>
+                                        </SortableItem>
+                                    </div>
                                 );
                             })}
                             {experiences.length === 0 && (

@@ -16,7 +16,7 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
             />
 
             {/* Grid Pattern Background */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] transform-gpu will-change-transform" />
 
             <div className="container relative z-10 px-4 md:px-6 flex flex-col items-center text-center gap-8">
                 <motion.div
@@ -25,18 +25,18 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
                     transition={{ duration: 0.8 }}
                     className="space-y-6 max-w-4xl"
                 >
-                    <div className="inline-flex items-center rounded-full border border-primary/20 px-3 py-1 text-sm font-medium backdrop-blur-md bg-black/40 text-white mb-4 shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+                    <div className="inline-flex items-center rounded-full border border-primary/20 px-3 py-1 text-sm font-medium backdrop-blur-md bg-black/40 text-white mb-4 shadow-[0_0_15px_rgba(34,211,238,0.3)] transform-gpu will-change-transform">
                         <span className="flex h-2 w-2 rounded-full bg-cyan-400 mr-2 animate-pulse" />
                         Available for new opportunities
                     </div>
 
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-neutral-400 pb-4">
+                    <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-neutral-500 pb-6 py-2 leading-none">
                         {personalInfo.name}
                     </h1>
-                    <h2 className="text-2xl md:text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 animate-gradient-x">
+                    <h2 className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-teal-400 pb-2">
                         {personalInfo.title}
                     </h2>
-                    <p className="text-neutral-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-neutral-500 text-sm md:text-base max-w-xl mx-auto leading-relaxed font-medium">
                         {personalInfo.tagline}
                     </p>
                 </motion.div>
@@ -45,16 +45,11 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.3 }}
-                    className="flex flex-col sm:flex-row gap-6 w-full justify-center"
+                    className="flex flex-col sm:flex-row gap-4 w-full justify-center"
                 >
-                    <Button size="lg" className="rounded-full px-8 text-lg bg-primary text-white hover:bg-primary/80 transition-all font-semibold shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:shadow-[0_0_30px_rgba(139,92,246,0.5)]" asChild>
+                    <Button size="lg" className="h-12 rounded-full px-12 text-sm bg-white text-black hover:bg-neutral-200 transition-all font-bold shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]" asChild>
                         <Link href="#projects">
-                            Portfolio
-                        </Link>
-                    </Button>
-                    <Button size="lg" variant="outline" className="rounded-full px-8 text-lg border-neutral-700 bg-black/50 backdrop-blur-md hover:bg-neutral-900 transition-all text-white hover:border-neutral-500" asChild>
-                        <Link href="/resume.pdf">
-                            Download CV
+                            View Portfolio
                         </Link>
                     </Button>
                 </motion.div>

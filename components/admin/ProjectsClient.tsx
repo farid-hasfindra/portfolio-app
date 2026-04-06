@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageUpload } from "./ImageUpload";
 import {
     DndContext,
     closestCenter,
@@ -31,6 +32,7 @@ interface ProjectItem {
     description: string;
     tags: string[];
     image: string;
+    gallery: string[];
     githubUrl: string;
     demoUrl: string;
     order: number;
@@ -45,6 +47,10 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
     const [projects, setProjects] = useState<ProjectItem[]>(initialProjects);
     const [isPending, setIsPending] = useState(false);
     const [deletingId, setDeletingId] = useState<string | null>(null);
+    
+    // New states for uploaded images
+    const [thumbnail, setThumbnail] = useState<string[]>([]);
+    const [gallery, setGallery] = useState<string[]>([]);
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -58,11 +64,23 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
     );
 
     async function handleAddProject(formData: FormData) {
+        if (thumbnail.length === 0) {
+            showToast("Please upload a thumbnail image", "error");
+            return;
+        }
+
         setIsPending(true);
+        
+        // Append uploaded images to formData
+        formData.append("image", thumbnail[0]);
+        formData.append("gallery", JSON.stringify(gallery));
+
         try {
             const result = await addProject(formData);
             if (result?.success) {
                 showToast(result.message, "success");
+                setThumbnail([]);
+                setGallery([]);
                 (document.getElementById("add-project-form") as HTMLFormElement)?.reset();
             } else {
                 showToast(result?.message || "Failed to add project", "error");
@@ -122,15 +140,16 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
     return (
         <div className="grid gap-8 lg:grid-cols-5">
             {/* Add Form */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 space-y-6">
                 <div className="rounded-2xl bg-white/[0.03] border border-white/8 p-6 space-y-5">
                     <div>
                         <h3 className="font-semibold text-white flex items-center gap-2">
-                            <Plus size={16} className="text-purple-400" /> Add New Project
+                            <Plus size={16} className="text-cyan-400" /> Add New Project
                         </h3>
                         <p className="text-xs text-neutral-500 mt-1">Showcase your latest work.</p>
                     </div>
                     <form id="add-project-form" action={handleAddProject} className="space-y-4">
+                        {/* Title & Tags */}
                         <div className="space-y-2">
                             <Label className="text-neutral-300 text-sm">Project Title</Label>
                             <Input
@@ -144,27 +163,41 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
                             <Textarea
                                 name="description" required
                                 placeholder="What did you build?"
-                                className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 rounded-xl min-h-[100px]"
+                                className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 rounded-xl min-h-[80px]"
                             />
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <Label className="text-neutral-300 text-sm">Tags (comma separated)</Label>
-                                <Input
-                                    name="tags" required
-                                    placeholder="Next.js, Python, AI"
-                                    className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 rounded-xl"
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <Label className="text-neutral-300 text-sm">Image URL</Label>
-                                <Input
-                                    name="image" required
-                                    placeholder="https://..."
-                                    className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 rounded-xl"
-                                />
-                            </div>
+                        
+                        {/* Tags */}
+                        <div className="space-y-2">
+                            <Label className="text-neutral-300 text-sm">Tags (comma separated)</Label>
+                            <Input
+                                name="tags" required
+                                placeholder="Next.js, Python, AI"
+                                className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 rounded-xl"
+                            />
                         </div>
+
+                        {/* Image Uploads */}
+                        <div className="space-y-4 pt-2">
+                            <ImageUpload
+                                endpoint="imageUploader"
+                                value={thumbnail}
+                                onChange={(urls) => setThumbnail(urls)}
+                                onRemove={() => setThumbnail([])}
+                                label="Project Thumbnail (Standard)"
+                                maxFiles={1}
+                            />
+                            
+                            <ImageUpload
+                                endpoint="imageUploader"
+                                value={gallery}
+                                onChange={(urls) => setGallery(urls)}
+                                onRemove={(url) => setGallery(gallery.filter(g => g !== url))}
+                                label="Gallery / Screenshots (Multiple)"
+                                maxFiles={10}
+                            />
+                        </div>
+
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label className="text-neutral-300 text-sm">GitHub URL</Label>
@@ -177,16 +210,16 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
                             <div className="space-y-2">
                                 <Label className="text-neutral-300 text-sm">Demo URL</Label>
                                 <Input
-                                    name="demoUrl" required
-                                    placeholder="https://..."
+                                    name="demoUrl" placeholder="https://..."
                                     className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 rounded-xl"
                                 />
                             </div>
                         </div>
+                        
                         <Button 
                             type="submit" 
                             disabled={isPending}
-                            className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-white rounded-xl font-semibold shadow-lg shadow-purple-500/20"
+                            className="w-full bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-500 hover:to-blue-600 text-white rounded-xl font-semibold shadow-lg shadow-cyan-500/20"
                         >
                             {isPending ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -213,12 +246,15 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
                                 return (
                                     <SortableItem key={project.id} id={project.id}>
                                         <div className="flex bg-white/[0.03] border border-white/5 rounded-2xl overflow-hidden group hover:border-white/10 transition-all">
-                                            <div className="w-32 sm:w-40 shrink-0 relative overflow-hidden">
-                                                <img 
-                                                    src={project.image} 
-                                                    alt={project.title}
-                                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                                />
+                                            <div className="w-32 sm:w-40 shrink-0 relative overflow-hidden bg-neutral-900/50">
+                                                {project.image && (
+                                                    // eslint-disable-next-line @next/next/no-img-element
+                                                    <img 
+                                                        src={project.image} 
+                                                        alt={project.title}
+                                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                                    />
+                                                )}
                                             </div>
                                             <div className="flex-1 p-4 flex flex-col justify-between">
                                                 <div>
@@ -239,10 +275,12 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
                                                             className="text-neutral-500 hover:text-white transition-colors">
                                                             <Github size={16} />
                                                         </a>
-                                                        <a href={project.demoUrl} target="_blank" rel="noreferrer"
-                                                            className="text-neutral-500 hover:text-white transition-colors">
-                                                            <ExternalLink size={16} />
-                                                        </a>
+                                                        {project.demoUrl && (
+                                                            <a href={project.demoUrl} target="_blank" rel="noreferrer"
+                                                                className="text-neutral-500 hover:text-white transition-colors">
+                                                                <ExternalLink size={16} />
+                                                            </a>
+                                                        )}
                                                     </div>
                                                     <Button
                                                         variant="ghost"

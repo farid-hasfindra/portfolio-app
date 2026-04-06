@@ -15,51 +15,61 @@ export function Experience({ experience }: { experience: ExperienceType[] }) {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false }}
-                    transition={{ duration: 0.5 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
                     className="text-center mb-16"
                 >
-                    <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-white">Professional Experience</h2>
-                    <p className="mt-4 text-neutral-400 text-lg">My journey in the tech industry.</p>
+                    <h2 className="text-4xl font-extrabold tracking-tighter sm:text-6xl bg-clip-text text-transparent bg-gradient-to-b from-white to-neutral-500 pb-4 py-2">
+                        Professional Experience
+                    </h2>
+                    <p className="mt-2 text-neutral-500 text-sm md:text-base font-medium">My journey in the tech industry.</p>
                 </motion.div>
 
-                <div className="max-w-4xl mx-auto space-y-8 relative">
-                    {/* Timeline line */}
-                    <div className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary/50 via-primary/20 to-transparent md:-translate-x-1/2" />
+                <div className="max-w-3xl mx-auto space-y-12 relative">
+                    {/* Refined Timeline line */}
+                    <div className="absolute left-[16px] md:left-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-cyan-500/50 via-blue-500/20 to-transparent md:-translate-x-1/2" />
 
                     {experience.map((exp, index) => (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                            initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
                             whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: false, margin: "-100px" }}
-                            transition={{ duration: 0.5, delay: index * 0.2 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            transition={{ duration: 0.6, delay: index * 0.1 }}
                             className={`flex flex-col md:flex-row gap-8 ${index % 2 === 0 ? "md:flex-row-reverse" : ""} relative`}
                         >
                             <div className="hidden md:block w-1/2" />
 
-                            <div className="absolute left-[20px] md:left-1/2 w-4 h-4 bg-primary rounded-full border-4 border-black z-10 md:-translate-x-1/2 mt-6" />
+                            <div className="absolute left-[16px] md:left-1/2 w-2.5 h-2.5 bg-cyan-500 rounded-full border-2 border-black z-10 md:-translate-x-1/2 mt-5 shadow-[0_0_10px_rgba(6,182,212,0.5)]" />
 
-                            <motion.div
-                                className="md:w-1/2 pl-12 md:pl-0"
-                                animate={{ y: [0, -10, 0] }}
-                                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" as const, delay: index * 0.2 }}
-                            >
-                                <Card className="relative overflow-hidden bg-neutral-900/50 border border-white/10 backdrop-blur-md">
-                                    <CardHeader>
-                                        <div className="flex flex-col gap-1">
-                                            <div className="flex justify-between items-start">
-                                                <CardTitle className="text-xl text-white font-bold">{exp.role}</CardTitle>
-                                                <Badge variant="outline" className="border-primary/50 text-white bg-primary/10 w-fit text-xs px-2 py-0.5">{exp.period}</Badge>
+                            <div className="md:w-1/2 pl-10 md:pl-0">
+                                <motion.div
+                                    whileHover={{ y: -5 }}
+                                    animate={{ 
+                                        y: [0, -25, 0],
+                                    }}
+                                    transition={{
+                                        duration: 5,
+                                        repeat: Infinity,
+                                        ease: "easeInOut",
+                                        delay: index * 0.5
+                                    }}
+                                    className="h-full"
+                                >
+                                    <div className="relative p-5 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-md hover:border-white/10 transition-all duration-300 group overflow-hidden">
+                                        <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        
+                                        <div className="relative z-10 flex flex-col gap-2">
+                                            <div className="flex justify-between items-start gap-4">
+                                                <h3 className="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">{exp.role}</h3>
+                                                <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-tighter shrink-0 mt-1">{exp.period}</span>
                                             </div>
-                                            <CardDescription className="text-base font-medium text-cyan-400">{exp.company}</CardDescription>
+                                            <p className="text-xs font-bold text-cyan-500 uppercase tracking-widest">{exp.company}</p>
+                                            <p className="text-neutral-400 text-[11px] leading-relaxed mt-1">{exp.description}</p>
                                         </div>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <p className="text-neutral-400 text-sm leading-relaxed">{exp.description}</p>
-                                    </CardContent>
-                                </Card>
-                            </motion.div>
+                                    </div>
+                                </motion.div>
+                            </div>
                         </motion.div>
                     ))}
                 </div>

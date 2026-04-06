@@ -18,10 +18,10 @@ export default async function AdminDashboard() {
       value: personalInfo ? "Configured" : "Not Set",
       icon: User,
       href: "/admin/personal-info",
-      color: "from-purple-500/20 to-purple-600/10",
-      border: "border-purple-500/20",
-      iconColor: "text-purple-400",
-      glow: "shadow-purple-500/10",
+      color: "from-cyan-500/20 to-blue-600/10",
+      border: "border-cyan-500/20",
+      iconColor: "text-cyan-400",
+      glow: "shadow-cyan-500/10",
     },
     {
       label: "Skills",
@@ -29,10 +29,10 @@ export default async function AdminDashboard() {
       suffix: "technologies",
       icon: Wrench,
       href: "/admin/skills",
-      color: "from-cyan-500/20 to-cyan-600/10",
-      border: "border-cyan-500/20",
-      iconColor: "text-cyan-400",
-      glow: "shadow-cyan-500/10",
+      color: "from-blue-500/20 to-blue-700/10",
+      border: "border-blue-500/20",
+      iconColor: "text-blue-400",
+      glow: "shadow-blue-500/10",
     },
     {
       label: "Projects",
@@ -40,10 +40,10 @@ export default async function AdminDashboard() {
       suffix: "projects",
       icon: Code,
       href: "/admin/projects",
-      color: "from-pink-500/20 to-pink-600/10",
-      border: "border-pink-500/20",
-      iconColor: "text-pink-400",
-      glow: "shadow-pink-500/10",
+      color: "from-teal-500/20 to-emerald-600/10",
+      border: "border-teal-500/20",
+      iconColor: "text-teal-400",
+      glow: "shadow-teal-500/10",
     },
     {
       label: "Experience",
@@ -51,10 +51,10 @@ export default async function AdminDashboard() {
       suffix: "positions",
       icon: Briefcase,
       href: "/admin/experience",
-      color: "from-amber-500/20 to-amber-600/10",
-      border: "border-amber-500/20",
-      iconColor: "text-amber-400",
-      glow: "shadow-amber-500/10",
+      color: "from-cyan-500/20 to-teal-600/10",
+      border: "border-cyan-500/20",
+      iconColor: "text-cyan-400",
+      glow: "shadow-cyan-500/10",
     },
   ];
 
@@ -70,7 +70,7 @@ export default async function AdminDashboard() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+          <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
           <span className="text-xs text-neutral-500 uppercase tracking-widest font-semibold">Live</span>
         </div>
         <h1 className="text-3xl font-bold text-white">Dashboard Overview</h1>
@@ -101,21 +101,21 @@ export default async function AdminDashboard() {
       {/* Quick Actions */}
       <div>
         <div className="flex items-center gap-2 mb-4">
-          <TrendingUp size={16} className="text-purple-400" />
+          <TrendingUp size={16} className="text-cyan-400" />
           <h2 className="text-lg font-semibold text-white">Quick Actions</h2>
         </div>
         <div className="grid gap-3 sm:grid-cols-2">
           {quickActions.map(({ label, desc, href, icon: Icon }) => (
             <Link key={href} href={href}>
               <div className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] hover:border-white/10 transition-all duration-200 group cursor-pointer">
-                <div className="p-2.5 rounded-xl bg-white/5 text-neutral-400 group-hover:text-purple-400 transition-colors">
+                <div className="p-2.5 rounded-xl bg-white/5 text-neutral-400 group-hover:text-cyan-400 transition-colors">
                   <Icon size={18} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-sm text-white">{label}</p>
                   <p className="text-xs text-neutral-500 truncate">{desc}</p>
                 </div>
-                <ArrowRight size={14} className="text-neutral-600 group-hover:text-purple-400 group-hover:translate-x-0.5 transition-all shrink-0" />
+                <ArrowRight size={14} className="text-neutral-600 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition-all shrink-0" />
               </div>
             </Link>
           ))}

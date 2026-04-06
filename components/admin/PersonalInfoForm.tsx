@@ -45,7 +45,7 @@ export function PersonalInfoForm({ info }: PersonalInfoFormProps) {
                         defaultValue={info?.name ?? ""}
                         required
                         placeholder="e.g. Farid Hasfindra"
-                        className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 focus:border-purple-500/50 focus:ring-purple-500/20 rounded-xl h-11"
+                        className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 focus:border-cyan-500/50 focus:ring-cyan-500/20 rounded-xl h-11"
                     />
                 </div>
                 <div className="space-y-2">
@@ -57,7 +57,7 @@ export function PersonalInfoForm({ info }: PersonalInfoFormProps) {
                         defaultValue={info?.email ?? ""}
                         required
                         placeholder="you@example.com"
-                        className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 focus:border-purple-500/50 focus:ring-purple-500/20 rounded-xl h-11"
+                        className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 focus:border-cyan-500/50 focus:ring-cyan-500/20 rounded-xl h-11"
                     />
                 </div>
             </div>
@@ -71,7 +71,7 @@ export function PersonalInfoForm({ info }: PersonalInfoFormProps) {
                     defaultValue={info?.title ?? ""}
                     required
                     placeholder="e.g. AI Engineer"
-                    className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 focus:border-purple-500/50 focus:ring-purple-500/20 rounded-xl h-11"
+                    className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 focus:border-cyan-500/50 focus:ring-cyan-500/20 rounded-xl h-11"
                 />
             </div>
 
@@ -84,7 +84,7 @@ export function PersonalInfoForm({ info }: PersonalInfoFormProps) {
                     defaultValue={info?.tagline ?? ""}
                     required
                     placeholder="e.g. Building production-ready AI systems..."
-                    className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 focus:border-purple-500/50 focus:ring-purple-500/20 rounded-xl h-11"
+                    className="bg-white/[0.03] border-white/10 text-white placeholder:text-neutral-600 focus:border-cyan-500/50 focus:ring-cyan-500/20 rounded-xl h-11"
                 />
             </div>
 
@@ -127,7 +127,7 @@ export function PersonalInfoForm({ info }: PersonalInfoFormProps) {
                     defaultValue={info?.description ?? ""}
                     required
                     rows={4}
-                    className="bg-white/[0.03] border-white/10 text-white focus:border-purple-500/50 rounded-xl resize-none"
+                    className="bg-white/[0.03] border-white/10 text-white focus:border-cyan-500/50 rounded-xl resize-none"
                 />
             </div>
 
@@ -135,7 +135,7 @@ export function PersonalInfoForm({ info }: PersonalInfoFormProps) {
                 <Button 
                     type="submit" 
                     disabled={isPending}
-                    className="px-8 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-white rounded-xl font-semibold shadow-lg shadow-purple-500/20 transition-all duration-200"
+                    className="px-8 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-xl font-semibold shadow-lg shadow-cyan-500/20 transition-all duration-200"
                 >
                     {isPending ? (
                         <>
