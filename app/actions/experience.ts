@@ -22,9 +22,9 @@ export async function addExperience(formData: FormData) {
 
     revalidatePath("/");
     revalidatePath("/admin/experience");
-    return;
+    return { success: true, message: "Experience added successfully!" };
   } catch (error) {
-    return;
+    return { success: false, message: "Failed to add experience." };
   }
 }
 
@@ -33,8 +33,26 @@ export async function deleteExperience(id: string) {
     await prisma.experience.delete({ where: { id } });
     revalidatePath("/");
     revalidatePath("/admin/experience");
-    return;
+    return { success: true, message: "Experience deleted successfully!" };
   } catch (error) {
-    return;
+    return { success: false, message: "Failed to delete experience." };
+  }
+}
+
+export async function reorderExperience(items: { id: string; order: number }[]) {
+  try {
+    await prisma.$transaction(
+      items.map((item) =>
+        prisma.experience.update({
+          where: { id: item.id },
+          data: { order: item.order },
+        })
+      )
+    );
+    revalidatePath("/");
+    revalidatePath("/admin/experience");
+    return { success: true, message: "Experience reordered successfully!" };
+  } catch (error) {
+    return { success: false, message: "Failed to reorder experience." };
   }
 }

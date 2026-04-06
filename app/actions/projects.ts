@@ -27,9 +27,9 @@ export async function addProject(formData: FormData) {
 
     revalidatePath("/");
     revalidatePath("/admin/projects");
-    return;
+    return { success: true, message: "Project added successfully!" };
   } catch (error) {
-    return;
+    return { success: false, message: "Failed to add project." };
   }
 }
 
@@ -38,8 +38,26 @@ export async function deleteProject(id: string) {
     await prisma.project.delete({ where: { id } });
     revalidatePath("/");
     revalidatePath("/admin/projects");
-    return;
+    return { success: true, message: "Project deleted successfully!" };
   } catch (error) {
-    return;
+    return { success: false, message: "Failed to delete project." };
+  }
+}
+
+export async function reorderProjects(items: { id: string; order: number }[]) {
+  try {
+    await prisma.$transaction(
+      items.map((item) =>
+        prisma.project.update({
+          where: { id: item.id },
+          data: { order: item.order },
+        })
+      )
+    );
+    revalidatePath("/");
+    revalidatePath("/admin/projects");
+    return { success: true, message: "Projects reordered successfully!" };
+  } catch (error) {
+    return { success: false, message: "Failed to reorder projects." };
   }
 }

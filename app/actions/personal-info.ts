@@ -29,9 +29,9 @@ export async function updatePersonalInfo(formData: FormData) {
     revalidatePath("/");
     revalidatePath("/admin/personal-info");
     
-    return;
+    return { success: true, message: "Personal information updated successfully!" };
   } catch (error) {
     console.error("Error updating personal info:", error);
-    throw error; // Re-throw to see it in terminal
+    return { success: false, message: "Failed to update personal information." };
   }
 }
