@@ -5,8 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { addSkill, deleteSkill, reorderSkills } from "@/app/actions/skills";
-import * as LucideIcons from "lucide-react";
-import { Plus, Trash2, ExternalLink, Loader2, GripVertical } from "lucide-react";
+import { 
+  Plus, Trash2, ExternalLink, Loader2, GripVertical,
+  Code2, Database, Globe, Layers, Layout, Cpu, 
+  Server, Smartphone, Terminal, Palette, Box, 
+  Wind, Zap, Shield, Search, Cloud, Brain, 
+  Workflow, GitBranch, TerminalSquare, Atom, 
+  DatabaseBackup, Monitor, Tablet, Activity
+} from "lucide-react";
 import { useToast } from "@/components/ui/toast-provider";
 import {
     DndContext,
@@ -35,6 +41,15 @@ interface SkillItem {
 interface SkillsClientProps {
     initialSkills: SkillItem[];
 }
+
+// Efficient Icon Map for better build performance
+const ICON_MAP: Record<string, any> = {
+  Code2, Database, Globe, Layers, Layout, Cpu, 
+  Server, Smartphone, Terminal, Palette, Box, 
+  Wind, Zap, Shield, Search, Cloud, Brain, 
+  Workflow, GitBranch, TerminalSquare, Atom, 
+  DatabaseBackup, Monitor, Tablet, Activity
+};
 
 export function SkillsClient({ initialSkills }: SkillsClientProps) {
     const { showToast } = useToast();
@@ -175,7 +190,7 @@ export function SkillsClient({ initialSkills }: SkillsClientProps) {
                     <SortableContext items={skills.map((s: SkillItem) => s.id)} strategy={verticalListSortingStrategy}>
                         <div className="grid gap-2">
                             {skills.map((skill: SkillItem) => {
-                                const IconComponent = (LucideIcons as any)[skill.icon] || LucideIcons.Code2;
+                                const IconComponent = ICON_MAP[skill.icon] || Code2;
                                 const isDeleting = deletingId === skill.id;
 
                                 return (

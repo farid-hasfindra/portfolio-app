@@ -1,8 +1,23 @@
 "use client";
 
 import { motion } from "framer-motion";
-import * as LucideIcons from "lucide-react";
+import { 
+  Code2, Database, Globe, Layers, Layout, Cpu, 
+  Server, Smartphone, Terminal, Palette, Box, 
+  Wind, Zap, Shield, Search, Cloud, Brain, 
+  Workflow, GitBranch, TerminalSquare, Atom, 
+  DatabaseBackup, Monitor, Tablet, Activity
+} from "lucide-react";
 import { Skill } from "@prisma/client";
+
+// Efficient Icon Map for better build performance
+const ICON_MAP: Record<string, any> = {
+  Code2, Database, Globe, Layers, Layout, Cpu, 
+  Server, Smartphone, Terminal, Palette, Box, 
+  Wind, Zap, Shield, Search, Cloud, Brain, 
+  Workflow, GitBranch, TerminalSquare, Atom, 
+  DatabaseBackup, Monitor, Tablet, Activity
+};
 
 export function Skills({ skills }: { skills: Skill[] }) {
     return (
@@ -29,7 +44,7 @@ export function Skills({ skills }: { skills: Skill[] }) {
 
                 <div className="flex flex-wrap justify-center gap-3 max-w-5xl mx-auto pb-10">
                     {skills.map((skill, index) => {
-                        const IconComponent = (LucideIcons as any)[skill.icon] || LucideIcons.Code2;
+                        const IconComponent = ICON_MAP[skill.icon] || Code2;
                         return (
                             <motion.div
                                 key={index}
