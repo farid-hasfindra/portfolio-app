@@ -58,7 +58,13 @@ export function AdminSidebar() {
 
       {/* Sign Out */}
       <div className="p-4 border-t border-white/5">
-        <form action={logout}>
+        <form 
+          action={async () => {
+            if (confirm("Are you sure you want to sign out?")) {
+              await logout();
+            }
+          }}
+        >
           <button
             type="submit"
             className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-neutral-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200 group"
