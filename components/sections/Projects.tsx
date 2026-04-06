@@ -11,7 +11,7 @@ import { AnimatePresence } from "framer-motion";
 import type { Project } from "@prisma/client";
 
 const FRAMEWORK_STEPS = [
-    { label: "Find Gap", icon: Search, description: "Find a gap in existing systems, processes, or workflows." },
+    { label: "Find Gap", icon: Search, description: "First, I'll try to find gaps in existing systems, processes, or workflows." },
     { label: "Problem Identify", icon: Lightbulb, description: "Identify whether the gap is an actual problem worth solving." },
     { label: "Design Solution", icon: PenTool, description: "If it's a problem, then I design an optimized solution tailored for it." },
     { label: "Build", icon: Code, description: "Build solutions efficiently using the appropriate technology stack." },
