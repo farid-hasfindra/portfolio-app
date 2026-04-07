@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useActionState } from "react";
 import { motion } from "framer-motion";
 import { Lock, ShieldCheck, User, KeyRound, Loader2, AlertCircle } from "lucide-react";
