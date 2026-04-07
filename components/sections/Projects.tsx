@@ -151,62 +151,70 @@ export function Projects({ projects }: { projects: Project[] }) {
                                 className="h-full bg-[#0a0a0a]/90 border-white/[0.05] relative z-10 overflow-hidden shadow-2xl rounded-[2rem]" 
                                 gradientColor="rgba(34, 211, 238, 0.08)"
                             >
-                                <div className="flex flex-col h-full">
-                                    {/* Cinematic Image Container with Aura Fill */}
-                                    <div className="relative h-56 w-full overflow-hidden bg-neutral-950 transform-gpu">
-                                        {/* Aura Fill: Blurred Background of the same image */}
-                                        <div className="absolute inset-0 z-0">
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img
-                                                src={project.image}
-                                                alt=""
-                                                loading="lazy"
-                                                decoding="async"
-                                                className="w-full h-full object-cover blur-2xl opacity-40 scale-125 saturate-150 transform-gpu"
-                                            />
-                                        </div>
-                                        
-                                        {/* Inner Shadow Vignette */}
-                                        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80 z-10" />
-                                        
-                                        {/* Main Sharp Image */}
-                                        <div className="absolute inset-0 z-20 flex items-center justify-center p-4">
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img
-                                                src={project.image}
-                                                alt={project.title}
-                                                loading="lazy"
-                                                decoding="async"
-                                                className="max-w-full max-h-full object-contain transform transition-transform duration-700 group-hover:scale-105 transform-gpu"
-                                            />
-                                        </div>
+                                <div className="flex flex-col h-full group/card">
+                                    {/* Link wrapper for the main card area */}
+                                    <Link href={`/project/${project.id}`} className="flex flex-col flex-grow">
+                                        {/* Cinematic Image Container with Aura Fill */}
+                                        <div className="relative h-56 w-full overflow-hidden bg-neutral-950 transform-gpu cursor-pointer">
+                                            {/* Aura Fill: Blurred Background of the same image */}
+                                            <div className="absolute inset-0 z-0">
+                                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                <img
+                                                    src={project.image}
+                                                    alt=""
+                                                    loading="lazy"
+                                                    decoding="async"
+                                                    className="w-full h-full object-cover blur-2xl opacity-40 scale-125 saturate-150 transform-gpu transition-opacity duration-500 group-hover/card:opacity-60"
+                                                />
+                                            </div>
+                                            
+                                            {/* Inner Shadow Vignette */}
+                                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80 z-10" />
+                                            
+                                            {/* Main Sharp Image */}
+                                            <div className="absolute inset-0 z-20 flex items-center justify-center p-4">
+                                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                <img
+                                                    src={project.image}
+                                                    alt={project.title}
+                                                    loading="lazy"
+                                                    decoding="async"
+                                                    className="max-w-full max-h-full object-contain transform transition-transform duration-700 group-hover/card:scale-105 transform-gpu"
+                                                />
+                                            </div>
 
-                                        {/* Floating Tag Overlay */}
-                                        <div className="absolute top-4 left-4 z-30">
-                                            <div className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-bold text-neutral-300 uppercase tracking-widest">
-                                                Project
+                                            {/* Floating Tag Overlay & Read More prompt */}
+                                            <div className="absolute top-4 left-4 z-30">
+                                                <div className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-bold text-neutral-300 uppercase tracking-widest">
+                                                    Project
+                                                </div>
+                                            </div>
+                                            
+                                            {/* View Details Overlay */}
+                                            <div className="absolute inset-0 bg-black/40 z-40 flex items-center justify-center opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                                <div className="px-4 py-2 rounded-full bg-black/60 backdrop-blur-md border border-cyan-500/30 text-xs font-bold text-white flex items-center gap-2 transform translate-y-4 group-hover/card:translate-y-0 transition-transform duration-300 ease-out">
+                                                    <Search size={14} className="text-cyan-400" /> View Details
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    
-                                    <div className="p-7 flex-grow flex flex-col justify-between">
-                                        <div className="mb-6">
-                                            <div className="flex items-center gap-2 mb-3">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse transition-all duration-500 group-hover:scale-150 group-hover:shadow-[0_0_10px_rgba(34,211,238,0.5)]" />
-                                                <h3 className="text-2xl font-bold text-white group-hover:text-cyan-400 transition-colors duration-300 tracking-tight">
-                                                    {project.title}
-                                                </h3>
+                                        
+                                        <div className="p-7 flex-grow flex flex-col justify-start cursor-pointer">
+                                            <div className="mb-6">
+                                                <div className="flex items-center gap-2 mb-3">
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse transition-all duration-500 group-hover/card:scale-150 group-hover/card:shadow-[0_0_10px_rgba(34,211,238,0.5)]" />
+                                                    <h3 className="text-2xl font-bold text-white group-hover/card:text-cyan-400 transition-colors duration-300 tracking-tight">
+                                                        {project.title}
+                                                    </h3>
+                                                </div>
+                                                <p className="text-neutral-400 text-sm leading-relaxed line-clamp-3">
+                                                    {project.description}
+                                                </p>
                                             </div>
-                                            <p className="text-neutral-400 text-sm leading-relaxed line-clamp-3">
-                                                {project.description}
-                                            </p>
-                                        </div>
 
-                                        <div>
                                             {/* Stack Tag Container */}
-                                            <div className="flex flex-wrap gap-2 mb-8">
+                                            <div className="flex flex-wrap gap-2 mb-2">
                                                 {project.tags.slice(0, 4).map((tag) => (
-                                                    <span key={tag} className="text-[10px] font-bold px-3 py-1 rounded-lg bg-white/[0.03] border border-white/5 text-neutral-500 hover:text-neutral-300 hover:border-white/10 transition-all duration-300">
+                                                    <span key={tag} className="text-[10px] font-bold px-3 py-1 rounded-lg bg-white/[0.03] border border-white/5 text-neutral-500 transition-colors duration-300">
                                                         {tag}
                                                     </span>
                                                 ))}
@@ -214,29 +222,31 @@ export function Projects({ projects }: { projects: Project[] }) {
                                                     <span className="text-[10px] text-neutral-500 italic">+{project.tags.length - 4} more</span>
                                                 )}
                                             </div>
-                                            
-                                            {/* Glass Action Buttons */}
-                                            <div className="flex gap-3">
-                                                <Button 
-                                                    variant="outline" 
-                                                    size="sm" 
-                                                    className="flex-1 h-11 rounded-xl text-xs font-bold tracking-wider border-white/5 bg-white/[0.02] hover:bg-white/[0.06] hover:border-white/10 text-neutral-300 hover:text-white transition-all duration-500 group/btn shadow-inner" 
-                                                    asChild
-                                                >
-                                                    <Link href={project.githubUrl} target="_blank">
-                                                        <Github className="mr-2 h-4 w-4 transition-transform group-hover/btn:-translate-y-1" /> GitHub
-                                                    </Link>
-                                                </Button>
-                                                <Button 
-                                                    size="sm" 
-                                                    className="flex-1 h-11 rounded-xl text-xs font-bold tracking-wider bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white border-0 shadow-lg shadow-cyan-500/20 active:scale-95 transition-all duration-500 group/btn" 
-                                                    asChild
-                                                >
-                                                    <Link href={project.demoUrl} target="_blank">
-                                                        <ExternalLink className="mr-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" /> Live Demo
-                                                    </Link>
-                                                </Button>
-                                            </div>
+                                        </div>
+                                    </Link>
+
+                                    {/* Separated Action Buttons outside the Link to prevent nested anchor tags */}
+                                    <div className="px-7 pb-7 pt-2 relative z-50">
+                                        <div className="flex gap-3">
+                                            <Button 
+                                                variant="outline" 
+                                                size="sm" 
+                                                className="flex-1 h-11 rounded-xl text-xs font-bold tracking-wider border-white/5 bg-white/[0.02] hover:bg-white/[0.06] hover:border-white/10 text-neutral-300 hover:text-white transition-all duration-500 group/btn shadow-inner" 
+                                                asChild
+                                            >
+                                                <Link href={project.githubUrl} target="_blank">
+                                                    <Github className="mr-2 h-4 w-4 transition-transform group-hover/btn:-translate-y-1" /> GitHub
+                                                </Link>
+                                            </Button>
+                                            <Button 
+                                                size="sm" 
+                                                className="flex-1 h-11 rounded-xl text-xs font-bold tracking-wider bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white border-0 shadow-lg shadow-cyan-500/20 active:scale-95 transition-all duration-500 group/btn" 
+                                                asChild
+                                            >
+                                                <Link href={project.demoUrl} target="_blank">
+                                                    <ExternalLink className="mr-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" /> Live Demo
+                                                </Link>
+                                            </Button>
                                         </div>
                                     </div>
                                 </div>

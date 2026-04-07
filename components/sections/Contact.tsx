@@ -83,16 +83,16 @@ export function Contact({ personalInfo }: ContactProps) {
                                     >
                                         <Button 
                                             variant="outline" 
-                                            size="sm" 
+                                            size="icon" 
                                             className={cn(
-                                                "h-11 px-6 rounded-xl border-white/5 bg-white/[0.01] text-neutral-400 transition-all duration-300 gap-2.5 font-bold text-[11px] uppercase tracking-wider",
+                                                "w-14 h-14 rounded-2xl border-white/5 bg-white/[0.02] text-neutral-400 transition-all duration-300 hover:shadow-lg",
                                                 social.color
                                             )} 
                                             asChild
+                                            title={social.label}
                                         >
                                             <Link href={social.href} target="_blank" rel="noopener noreferrer">
-                                                <social.icon size={16} />
-                                                <span>{social.label}</span>
+                                                <social.icon size={22} strokeWidth={2.5} />
                                             </Link>
                                         </Button>
                                     </motion.div>
