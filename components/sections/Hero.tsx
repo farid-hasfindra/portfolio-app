@@ -26,7 +26,6 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
                     className="space-y-6 max-w-4xl"
                 >
                     <div className="inline-flex items-center rounded-full border border-primary/20 px-3 py-1 text-sm font-medium backdrop-blur-md bg-black/40 text-white mb-4 shadow-[0_0_15px_rgba(34,211,238,0.3)] transform-gpu will-change-transform">
-                        <span className="flex h-2 w-2 rounded-full bg-cyan-400 mr-2 animate-pulse" />
                         Available for new opportunities
                     </div>
 

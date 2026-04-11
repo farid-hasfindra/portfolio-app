@@ -46,7 +46,7 @@ model Project {
   image       String   // Thumbnail
   gallery     String[] @default([]) // Multiple screenshots
   demoUrl     String
-  githubUrl   String
+  githubLinks Json     @default("[]") // [{ name: string, url: string }]
   order       Int      @default(0)
   createdAt   DateTime @default(now())
 }

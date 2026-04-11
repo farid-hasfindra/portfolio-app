@@ -1,26 +1,54 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Github, ExternalLink, ArrowLeft, ChevronLeft, ChevronRight, Layers, Maximize2, X } from "lucide-react";
+import { Github, ExternalLink, ArrowLeft, ChevronLeft, ChevronRight, Layers, Maximize2, X, ChevronDown } from "lucide-react";
 import type { Project } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+
+interface GithubLink {
+    name: string;
+    url: string;
+}
 
 export function ProjectClient({ project, otherProjects }: { project: Project, otherProjects: Project[] }) {
     const router = useRouter();
     const allImages = [project.image, ...(project.gallery || [])];
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isZoomed, setIsZoomed] = useState(false);
+    const [isGithubDropdownOpen, setIsGithubDropdownOpen] = useState(false);
+    const githubDropdownRef = useRef<HTMLDivElement>(null);
 
-    // Handle ESC key to close zoom
+    // Parse githubLinks safely from JSON field
+    const githubLinks: GithubLink[] = Array.isArray(project.githubLinks)
+        ? (project.githubLinks as unknown as GithubLink[])
+        : [];
+    const hasSingleGithubLink = githubLinks.length === 1;
+    const hasMultipleGithubLinks = githubLinks.length > 1;
+
+    // Handle ESC key to close zoom and dropdown
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === "Escape") setIsZoomed(false);
+            if (e.key === "Escape") {
+                setIsZoomed(false);
+                setIsGithubDropdownOpen(false);
+            }
         };
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
+    }, []);
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (githubDropdownRef.current && !githubDropdownRef.current.contains(e.target as Node)) {
+                setIsGithubDropdownOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
     const nextImage = () => {
@@ -138,21 +166,71 @@ export function ProjectClient({ project, otherProjects }: { project: Project, ot
                                         {project.title}
                                     </h1>
                                     
-                                    {/* Action Buttons (Icon Only) - Top Right */}
+                                    {/* Action Buttons (Icon Only for single GitHub, Dropdown for multiple) */}
                                     <div className="flex items-center gap-3 shrink-0 md:pt-1">
-                                        {project.githubUrl && (
+                                        {/* GitHub Button - Conditional */}
+                                        {hasSingleGithubLink && (
                                             <Button 
                                                 variant="outline"
                                                 size="icon"
                                                 className="h-10 w-10 md:h-12 md:w-12 rounded-full border-white/20 bg-transparent hover:bg-white/5 text-white transition-all transform hover:-translate-y-1 shadow-sm"
                                                 asChild
-                                                title="View Source Code"
+                                                title={githubLinks[0].name || "View Source Code"}
                                             >
-                                                <a href={project.githubUrl} target="_blank" rel="noreferrer">
+                                                <a href={githubLinks[0].url} target="_blank" rel="noreferrer">
                                                     <Github className="h-4 w-4 md:h-5 md:w-5" />
                                                 </a>
                                             </Button>
                                         )}
+
+                                        {hasMultipleGithubLinks && (
+                                            <div className="relative" ref={githubDropdownRef}>
+                                                <Button 
+                                                    variant="outline"
+                                                    size="icon"
+                                                    className="h-10 w-10 md:h-12 md:w-12 rounded-full border-white/20 bg-transparent hover:bg-white/5 text-white transition-all transform hover:-translate-y-1 shadow-sm relative"
+                                                    onClick={() => setIsGithubDropdownOpen(prev => !prev)}
+                                                    title="View Source Code"
+                                                >
+                                                    <Github className="h-4 w-4 md:h-5 md:w-5" />
+                                                    <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-cyan-500 text-[9px] font-extrabold text-black flex items-center justify-center">
+                                                        {githubLinks.length}
+                                                    </span>
+                                                </Button>
+
+                                                <AnimatePresence>
+                                                    {isGithubDropdownOpen && (
+                                                        <motion.div
+                                                            initial={{ opacity: 0, y: -8, scale: 0.95 }}
+                                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                            exit={{ opacity: 0, y: -8, scale: 0.95 }}
+                                                            transition={{ duration: 0.15, ease: "easeOut" }}
+                                                            className="absolute right-0 top-14 z-50 min-w-[200px] bg-[#111] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+                                                        >
+                                                            <div className="p-2 flex flex-col gap-1">
+                                                                {githubLinks.map((link, idx) => (
+                                                                    <a
+                                                                        key={idx}
+                                                                        href={link.url}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                        onClick={() => setIsGithubDropdownOpen(false)}
+                                                                        className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-colors group/item"
+                                                                    >
+                                                                        <Github className="w-4 h-4 text-neutral-500 group-hover/item:text-white transition-colors shrink-0" />
+                                                                        <span className="text-sm font-semibold text-neutral-300 group-hover/item:text-white transition-colors">
+                                                                            {link.name || `Repository ${idx + 1}`}
+                                                                        </span>
+                                                                    </a>
+                                                                ))}
+                                                            </div>
+                                                        </motion.div>
+                                                    )}
+                                                </AnimatePresence>
+                                            </div>
+                                        )}
+
+                                        {/* Live Demo Button */}
                                         {project.demoUrl && (
                                             <Button 
                                                 size="icon"

@@ -70,7 +70,6 @@ export default async function AdminDashboard() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
           <span className="text-xs text-neutral-500 uppercase tracking-widest font-semibold">Live</span>
         </div>
         <h1 className="text-3xl font-bold text-white">Dashboard Overview</h1>

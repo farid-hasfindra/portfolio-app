@@ -50,7 +50,6 @@ export function AdminSidebar() {
                 className={isActive ? "text-cyan-400" : "text-neutral-500 group-hover:text-neutral-300"}
               />
               {label}
-              {isActive && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-cyan-400"></span>}
             </Link>
           );
         })}

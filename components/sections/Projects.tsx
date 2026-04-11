@@ -29,24 +29,6 @@ export function Projects({ projects }: { projects: Project[] }) {
             {/* Advanced Background Elements */}
             <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[120px] -z-10 animate-pulse" />
             <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] -z-10 animate-pulse" style={{ animationDelay: '2s' }} />
-            
-            {/* Animated particles placeholder effect */}
-            <motion.div 
-                animate={{ 
-                    y: [0, -20, 0],
-                    opacity: [0.1, 0.3, 0.1]
-                }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-20 right-20 w-1 h-1 bg-white rounded-full blur-[1px]" 
-            />
-            <motion.div 
-                animate={{ 
-                    y: [0, 20, 0],
-                    opacity: [0.1, 0.2, 0.1]
-                }}
-                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute bottom-40 left-40 w-1.5 h-1.5 bg-cyan-400 rounded-full blur-[1px]" 
-            />
 
             <div className="container px-4 md:px-6">
                 <motion.div
@@ -200,12 +182,9 @@ export function Projects({ projects }: { projects: Project[] }) {
                                         
                                         <div className="p-7 flex-grow flex flex-col justify-start cursor-pointer">
                                             <div className="mb-6">
-                                                <div className="flex items-center gap-2 mb-3">
-                                                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse transition-all duration-500 group-hover/card:scale-150 group-hover/card:shadow-[0_0_10px_rgba(34,211,238,0.5)]" />
-                                                    <h3 className="text-2xl font-bold text-white group-hover/card:text-cyan-400 transition-colors duration-300 tracking-tight">
-                                                        {project.title}
-                                                    </h3>
-                                                </div>
+                                                <h3 className="text-2xl font-bold text-white group-hover/card:text-cyan-400 transition-colors duration-300 tracking-tight mb-3">
+                                                    {project.title}
+                                                </h3>
                                                 <p className="text-neutral-400 text-sm leading-relaxed line-clamp-3">
                                                     {project.description}
                                                 </p>
@@ -234,9 +213,16 @@ export function Projects({ projects }: { projects: Project[] }) {
                                                 className="flex-1 h-11 rounded-xl text-xs font-bold tracking-wider border-white/5 bg-white/[0.02] hover:bg-white/[0.06] hover:border-white/10 text-neutral-300 hover:text-white transition-all duration-500 group/btn shadow-inner" 
                                                 asChild
                                             >
-                                                <Link href={project.githubUrl} target="_blank">
-                                                    <Github className="mr-2 h-4 w-4 transition-transform group-hover/btn:-translate-y-1" /> GitHub
-                                                </Link>
+                                                {(() => {
+                                                    const links = Array.isArray(project.githubLinks) ? project.githubLinks as { name: string; url: string }[] : [];
+                                                    const href = links.length === 1 ? links[0].url : `/project/${project.id}`;
+                                                    const isExternal = links.length === 1;
+                                                    return (
+                                                        <Link href={href} target={isExternal ? "_blank" : "_self"}>
+                                                            <Github className="mr-2 h-4 w-4 transition-transform group-hover/btn:-translate-y-1" /> GitHub
+                                                        </Link>
+                                                    );
+                                                })()}
                                             </Button>
                                             <Button 
                                                 size="sm" 

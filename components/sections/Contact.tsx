@@ -41,7 +41,6 @@ export function Contact({ personalInfo }: ContactProps) {
                         <div className="relative z-10 bg-[#030014]/90 backdrop-blur-3xl rounded-[2.4rem] p-8 md:p-14 flex flex-col items-center text-center">
                             {/* Decorative Label */}
                             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-[9px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-6">
-                                <span className="w-1 h-1 rounded-full bg-cyan-400 animate-ping" />
                                 Available for chat
                             </div>
 

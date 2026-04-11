@@ -10,11 +10,12 @@ export async function addProject(formData: FormData) {
     const tagsString = formData.get("tags") as string;
     const image = formData.get("image") as string;
     const gallerySerialized = formData.get("gallery") as string;
-    const githubUrl = formData.get("githubUrl") as string;
+    const githubLinksSerialized = formData.get("githubLinks") as string;
     const demoUrl = formData.get("demoUrl") as string;
     
     const tags = tagsString.split(",").map(tag => tag.trim());
     const gallery = gallerySerialized ? JSON.parse(gallerySerialized) : [];
+    const githubLinks = githubLinksSerialized ? JSON.parse(githubLinksSerialized) : [];
 
     const maxOrderProject = await prisma.project.findFirst({
       orderBy: { order: "desc" },
@@ -29,7 +30,7 @@ export async function addProject(formData: FormData) {
         tags, 
         image, 
         gallery,
-        githubUrl, 
+        githubLinks, 
         demoUrl, 
         order: newOrder 
       },
@@ -51,6 +52,34 @@ export async function deleteProject(id: string) {
     return { success: true, message: "Project deleted successfully!" };
   } catch (error) {
     return { success: false, message: "Failed to delete project." };
+  }
+}
+
+export async function updateProject(id: string, formData: FormData) {
+  try {
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+    const tagsString = formData.get("tags") as string;
+    const image = formData.get("image") as string;
+    const gallerySerialized = formData.get("gallery") as string;
+    const githubLinksSerialized = formData.get("githubLinks") as string;
+    const demoUrl = formData.get("demoUrl") as string;
+
+    const tags = tagsString.split(",").map(tag => tag.trim()).filter(Boolean);
+    const gallery = gallerySerialized ? JSON.parse(gallerySerialized) : [];
+    const githubLinks = githubLinksSerialized ? JSON.parse(githubLinksSerialized) : [];
+
+    await prisma.project.update({
+      where: { id },
+      data: { title, description, tags, image, gallery, githubLinks, demoUrl },
+    });
+
+    revalidatePath("/");
+    revalidatePath("/admin/projects");
+    revalidatePath(`/project/${id}`);
+    return { success: true, message: "Project updated successfully!" };
+  } catch (error) {
+    return { success: false, message: "Failed to update project." };
   }
 }
 

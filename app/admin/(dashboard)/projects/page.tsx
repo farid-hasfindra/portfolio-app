@@ -21,7 +21,7 @@ export default async function ProjectsAdmin() {
         </p>
       </div>
 
-      <ProjectsClient initialProjects={projects} />
+      <ProjectsClient initialProjects={projects as any} />
     </div>
   );
 }

@@ -40,7 +40,7 @@ export function Experience({ experience }: { experience: ExperienceType[] }) {
                         >
                             <div className="hidden md:block w-1/2" />
 
-                            <div className="absolute left-[16px] md:left-1/2 w-2.5 h-2.5 bg-cyan-500 rounded-full border-2 border-black z-10 md:-translate-x-1/2 mt-5 shadow-[0_0_10px_rgba(6,182,212,0.5)]" />
+
 
                             <div className="md:w-1/2 pl-10 md:pl-0">
                                 <motion.div
