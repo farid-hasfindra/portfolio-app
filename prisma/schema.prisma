@@ -51,11 +51,4 @@ model Project {
   createdAt   DateTime @default(now())
 }
 
-model Experience {
-  id          String @id @default(cuid())
-  company     String
-  role        String
-  period      String
-  description String
-  order       Int    @default(0)
-}
+

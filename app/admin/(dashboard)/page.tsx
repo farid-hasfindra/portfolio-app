@@ -5,10 +5,9 @@ import Link from "next/link";
 export const revalidate = 0;
 
 export default async function AdminDashboard() {
-  const [skillsCount, projectsCount, expCount, personalInfo] = await Promise.all([
+  const [skillsCount, projectsCount, personalInfo] = await Promise.all([
     prisma.skill.count(),
     prisma.project.count(),
-    prisma.experience.count(),
     prisma.personalInfo.findFirst(),
   ]);
 
@@ -45,24 +44,12 @@ export default async function AdminDashboard() {
       iconColor: "text-teal-400",
       glow: "shadow-teal-500/10",
     },
-    {
-      label: "Experience",
-      value: expCount,
-      suffix: "positions",
-      icon: Briefcase,
-      href: "/admin/experience",
-      color: "from-cyan-500/20 to-teal-600/10",
-      border: "border-cyan-500/20",
-      iconColor: "text-cyan-400",
-      glow: "shadow-cyan-500/10",
-    },
   ];
 
   const quickActions = [
     { label: "Edit Personal Info", desc: "Update your name, tagline & email", href: "/admin/personal-info", icon: User },
     { label: "Manage Skills", desc: "Add or remove your tech skills", href: "/admin/skills", icon: Wrench },
     { label: "Add New Project", desc: "Showcase a new AI project", href: "/admin/projects", icon: Code },
-    { label: "Add Experience", desc: "Add a new work experience", href: "/admin/experience", icon: Briefcase },
   ];
 
   return (
