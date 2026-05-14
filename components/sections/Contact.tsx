@@ -49,7 +49,7 @@ export function Contact({ personalInfo }: ContactProps) {
                             </h2>
                             
                             <p className="text-neutral-400 text-sm md:text-base mb-10 max-w-lg leading-relaxed font-medium">
-                                Open for new opportunities. Ready to help your team build high-performance AI solutions.
+                                Open for new opportunities. Ready to help your team build high performance AI or Data solutions.
                             </p>
 
                             {/* Main Contact Tile */}

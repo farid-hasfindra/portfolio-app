@@ -13,13 +13,20 @@ interface GithubLink {
     url: string;
 }
 
+interface Attachment {
+    name: string;
+    url: string;
+}
+
 export function ProjectClient({ project, otherProjects }: { project: Project, otherProjects: Project[] }) {
     const router = useRouter();
     const allImages = [project.image, ...(project.gallery || [])];
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isZoomed, setIsZoomed] = useState(false);
     const [isGithubDropdownOpen, setIsGithubDropdownOpen] = useState(false);
+    const [isAttachmentDropdownOpen, setIsAttachmentDropdownOpen] = useState(false);
     const githubDropdownRef = useRef<HTMLDivElement>(null);
+    const attachmentDropdownRef = useRef<HTMLDivElement>(null);
 
     // Parse githubLinks safely from JSON field
     const githubLinks: GithubLink[] = Array.isArray(project.githubLinks)
@@ -27,6 +34,13 @@ export function ProjectClient({ project, otherProjects }: { project: Project, ot
         : [];
     const hasSingleGithubLink = githubLinks.length === 1;
     const hasMultipleGithubLinks = githubLinks.length > 1;
+    
+    // Parse attachments safely
+    const attachments: Attachment[] = Array.isArray((project as any).attachments)
+        ? ((project as any).attachments as Attachment[])
+        : [];
+    const hasSingleAttachment = attachments.length === 1;
+    const hasMultipleAttachments = attachments.length > 1;
 
     // Handle ESC key to close zoom and dropdown
     useEffect(() => {
@@ -34,6 +48,7 @@ export function ProjectClient({ project, otherProjects }: { project: Project, ot
             if (e.key === "Escape") {
                 setIsZoomed(false);
                 setIsGithubDropdownOpen(false);
+                setIsAttachmentDropdownOpen(false);
             }
         };
         window.addEventListener("keydown", handleKeyDown);
@@ -45,6 +60,9 @@ export function ProjectClient({ project, otherProjects }: { project: Project, ot
         const handleClickOutside = (e: MouseEvent) => {
             if (githubDropdownRef.current && !githubDropdownRef.current.contains(e.target as Node)) {
                 setIsGithubDropdownOpen(false);
+            }
+            if (attachmentDropdownRef.current && !attachmentDropdownRef.current.contains(e.target as Node)) {
+                setIsAttachmentDropdownOpen(false);
             }
         };
         document.addEventListener("mousedown", handleClickOutside);
@@ -259,16 +277,79 @@ export function ProjectClient({ project, otherProjects }: { project: Project, ot
                             
                             <div className="w-full h-px bg-gradient-to-r from-white/10 via-white/5 to-transparent mb-8" />
 
-                            {/* Detailed Description */}
-                            <div className="prose prose-invert prose-lg max-w-none">
-                                <h3 className="text-xl font-bold text-white mb-4">Project Overview</h3>
-                                <div className="text-neutral-300 leading-relaxed space-y-4 font-medium text-[1.05rem]">
-                                    {project.description.split('\n').map((paragraph, idx) => (
-                                        <p key={idx}>{paragraph}</p>
-                                    ))}
-                                </div>
-                            </div>
-                        </motion.div>
+                             {/* Detailed Description */}
+                             <div className="prose prose-invert prose-lg max-w-none mt-10">
+                                 <h3 className="text-xl font-bold text-white mb-4">Project Overview</h3>
+                                 <div className="text-neutral-300 leading-relaxed space-y-4 font-medium text-[1.05rem]">
+                                     {(project.description as string).split('\n').map((paragraph, idx) => (
+                                         <p key={idx}>{paragraph}</p>
+                                     ))}
+                                 </div>
+                             </div>
+ 
+                             {(hasSingleAttachment || hasMultipleAttachments) && (
+                                 <div className="mt-8 p-6 rounded-2xl bg-cyan-500/5 border border-cyan-500/10 flex flex-col md:flex-row items-center justify-between gap-4 group/doc transition-all hover:bg-cyan-500/10">
+                                     <div className="flex items-center gap-4">
+                                         <div className="p-3 rounded-xl bg-cyan-500/20 text-cyan-400 group-hover/doc:scale-110 transition-transform">
+                                             <Layers className="w-6 h-6" />
+                                         </div>
+                                         <div>
+                                             <h4 className="text-sm font-bold text-white uppercase tracking-wider">Design System & Documentation</h4>
+                                             <p className="text-xs text-neutral-400 mt-1">
+                                                 {hasSingleAttachment 
+                                                    ? (attachments[0].name || "View detailed design specifications")
+                                                    : `${attachments.length} Versions Available`}
+                                             </p>
+                                         </div>
+                                     </div>
+
+                                     {hasSingleAttachment ? (
+                                         <Button 
+                                             asChild
+                                             className="bg-cyan-500 hover:bg-cyan-400 text-black font-bold rounded-xl px-6 w-full md:w-auto"
+                                         >
+                                             <a href={attachments[0].url} target="_blank" rel="noreferrer">
+                                                 View Document <ExternalLink className="w-4 h-4 ml-2" />
+                                             </a>
+                                         </Button>
+                                     ) : (
+                                         <div className="relative w-full md:w-auto" ref={attachmentDropdownRef}>
+                                             <Button 
+                                                 onClick={() => setIsAttachmentDropdownOpen(!isAttachmentDropdownOpen)}
+                                                 className="bg-cyan-500 hover:bg-cyan-400 text-black font-bold rounded-xl px-6 w-full md:w-auto"
+                                             >
+                                                 View Document <ChevronDown className={`w-4 h-4 ml-2 transition-transform duration-300 ${isAttachmentDropdownOpen ? "rotate-180" : ""}`} />
+                                             </Button>
+
+                                             <AnimatePresence>
+                                                 {isAttachmentDropdownOpen && (
+                                                     <motion.div
+                                                         initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                                         animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                                         className="absolute bottom-full mb-3 right-0 w-64 bg-[#14141a] border border-white/10 rounded-2xl shadow-2xl p-2 z-50 overflow-hidden backdrop-blur-xl"
+                                                     >
+                                                         {attachments.map((att, idx) => (
+                                                             <a
+                                                                 key={idx}
+                                                                 href={att.url}
+                                                                 target="_blank"
+                                                                 rel="noreferrer"
+                                                                 onClick={() => setIsAttachmentDropdownOpen(false)}
+                                                                 className="flex items-center justify-between p-3 rounded-xl text-sm text-neutral-300 hover:text-white hover:bg-white/5 transition-all group/item"
+                                                             >
+                                                                 <span className="font-medium">{att.name || `Version ${idx + 1}`}</span>
+                                                                 <ExternalLink className="w-4 h-4 opacity-0 group-hover/item:opacity-100 transition-opacity" />
+                                                             </a>
+                                                         ))}
+                                                     </motion.div>
+                                                 )}
+                                             </AnimatePresence>
+                                         </div>
+                                     )}
+                                 </div>
+                             )}
+                         </motion.div>
                     </div>
 
                     {/* RIGHT COLUMN: Sidebar */}

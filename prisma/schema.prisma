@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -19,16 +16,16 @@ model Admin {
 }
 
 model PersonalInfo {
-  id          Int      @id @default(1)
-  name        String
-  title       String
-  tagline     String
-  description String
-  email       String
-  githubUrl   String?
-  linkedinUrl String?
+  id           Int      @id @default(1)
+  name         String
+  title        String
+  tagline      String
+  description  String
+  email        String
+  updatedAt    DateTime @updatedAt
+  githubUrl    String?
+  linkedinUrl  String?
   instagramUrl String?
-  updatedAt   DateTime @updatedAt
 }
 
 model Skill {
@@ -39,16 +36,15 @@ model Skill {
 }
 
 model Project {
-  id          String   @id @default(cuid())
-  title       String
-  description String
-  tags        String[]
-  image       String   // Thumbnail
-  gallery     String[] @default([]) // Multiple screenshots
-  demoUrl     String
-  githubLinks Json     @default("[]") // [{ name: string, url: string }]
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
+  id             String   @id @default(cuid())
+  title          String
+  description    String
+  tags           String[]
+  image          String
+  demoUrl        String
+  order          Int      @default(0)
+  createdAt      DateTime @default(now())
+  gallery        String[] @default([])
+  githubLinks    Json     @default("[]")
+  attachments    Json     @default("[]") // [{ name: string, url: string }]
 }
-
-

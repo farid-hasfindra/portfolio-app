@@ -12,6 +12,8 @@ export async function addProject(formData: FormData) {
     const gallerySerialized = formData.get("gallery") as string;
     const githubLinksSerialized = formData.get("githubLinks") as string;
     const demoUrl = formData.get("demoUrl") as string;
+    const attachmentSerialized = formData.get("attachments") as string;
+    const attachments = attachmentSerialized ? JSON.parse(attachmentSerialized) : [];
     
     const tags = tagsString.split(",").map(tag => tag.trim());
     const gallery = gallerySerialized ? JSON.parse(gallerySerialized) : [];
@@ -32,6 +34,7 @@ export async function addProject(formData: FormData) {
         gallery,
         githubLinks, 
         demoUrl, 
+        attachments,
         order: newOrder 
       },
     });
@@ -64,6 +67,8 @@ export async function updateProject(id: string, formData: FormData) {
     const gallerySerialized = formData.get("gallery") as string;
     const githubLinksSerialized = formData.get("githubLinks") as string;
     const demoUrl = formData.get("demoUrl") as string;
+    const attachmentSerialized = formData.get("attachments") as string;
+    const attachments = attachmentSerialized ? JSON.parse(attachmentSerialized) : [];
 
     const tags = tagsString.split(",").map(tag => tag.trim()).filter(Boolean);
     const gallery = gallerySerialized ? JSON.parse(gallerySerialized) : [];
@@ -71,7 +76,7 @@ export async function updateProject(id: string, formData: FormData) {
 
     await prisma.project.update({
       where: { id },
-      data: { title, description, tags, image, gallery, githubLinks, demoUrl },
+      data: { title, description, tags, image, gallery, githubLinks, demoUrl, attachments },
     });
 
     revalidatePath("/");
@@ -79,6 +84,7 @@ export async function updateProject(id: string, formData: FormData) {
     revalidatePath(`/project/${id}`);
     return { success: true, message: "Project updated successfully!" };
   } catch (error) {
+    console.error("Update project error:", error);
     return { success: false, message: "Failed to update project." };
   }
 }

@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ImageUpload } from "./ImageUpload";
+import { FileUpload } from "./FileUpload";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     DndContext,
@@ -32,6 +33,11 @@ interface GithubLink {
     url: string;
 }
 
+interface Attachment {
+    name: string;
+    url: string;
+}
+
 interface ProjectItem {
     id: string;
     title: string;
@@ -39,8 +45,7 @@ interface ProjectItem {
     tags: string[];
     image: string;
     gallery: string[];
-    githubLinks: GithubLink[];
-    demoUrl: string;
+    attachments: Attachment[];
     order: number;
 }
 
@@ -58,6 +63,7 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
     const [thumbnail, setThumbnail] = useState<string[]>([]);
     const [gallery, setGallery] = useState<string[]>([]);
     const [githubLinks, setGithubLinks] = useState<GithubLink[]>([{ name: "", url: "" }]);
+    const [attachments, setAttachments] = useState<Attachment[]>([]);
 
     // Edit modal states
     const [editingProject, setEditingProject] = useState<ProjectItem | null>(null);
@@ -65,6 +71,7 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
     const [editThumbnail, setEditThumbnail] = useState<string[]>([]);
     const [editGallery, setEditGallery] = useState<string[]>([]);
     const [editGithubLinks, setEditGithubLinks] = useState<GithubLink[]>([{ name: "", url: "" }]);
+    const [editAttachments, setEditAttachments] = useState<Attachment[]>([]);
 
     const addGithubLink = () => setGithubLinks(prev => [...prev, { name: "", url: "" }]);
     const removeGithubLink = (idx: number) => setGithubLinks(prev => prev.filter((_, i) => i !== idx));
@@ -76,6 +83,16 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
     const updateEditGithubLink = (idx: number, field: keyof GithubLink, value: string) =>
         setEditGithubLinks(prev => prev.map((link, i) => i === idx ? { ...link, [field]: value } : link));
 
+    const addAttachment = () => setAttachments(prev => [...prev, { name: "", url: "" }]);
+    const removeAttachment = (idx: number) => setAttachments(prev => prev.filter((_, i) => i !== idx));
+    const updateAttachment = (idx: number, field: keyof Attachment, value: string) =>
+        setAttachments(prev => prev.map((att, i) => i === idx ? { ...att, [field]: value } : att));
+
+    const addEditAttachment = () => setEditAttachments(prev => [...prev, { name: "", url: "" }]);
+    const removeEditAttachment = (idx: number) => setEditAttachments(prev => prev.filter((_, i) => i !== idx));
+    const updateEditAttachment = (idx: number, field: keyof Attachment, value: string) =>
+        setEditAttachments(prev => prev.map((att, i) => i === idx ? { ...att, [field]: value } : att));
+
     const openEditModal = (project: ProjectItem) => {
         setEditingProject(project);
         setEditThumbnail(project.image ? [project.image] : []);
@@ -85,6 +102,7 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
                 ? project.githubLinks
                 : [{ name: "", url: "" }]
         );
+        setEditAttachments(project.attachments || []);
     };
 
     const closeEditModal = () => {
@@ -92,6 +110,7 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
         setEditThumbnail([]);
         setEditGallery([]);
         setEditGithubLinks([{ name: "", url: "" }]);
+        setEditAttachments([]);
     };
 
     const sensors = useSensors(
@@ -109,6 +128,8 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
         formData.append("gallery", JSON.stringify(gallery));
         const validLinks = githubLinks.filter(l => l.url.trim() !== "");
         formData.append("githubLinks", JSON.stringify(validLinks));
+        const validAttachments = attachments.filter(a => a.url.trim() !== "");
+        formData.append("attachments", JSON.stringify(validAttachments));
         try {
             const result = await addProject(formData);
             if (result?.success) {
@@ -116,6 +137,7 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
                 setThumbnail([]);
                 setGallery([]);
                 setGithubLinks([{ name: "", url: "" }]);
+                setAttachments([]);
                 (document.getElementById("add-project-form") as HTMLFormElement)?.reset();
             } else {
                 showToast(result?.message || "Failed to add project", "error");
@@ -138,6 +160,8 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
         formData.append("gallery", JSON.stringify(editGallery));
         const validLinks = editGithubLinks.filter(l => l.url.trim() !== "");
         formData.append("githubLinks", JSON.stringify(validLinks));
+        const validAttachments = editAttachments.filter(a => a.url.trim() !== "");
+        formData.append("attachments", JSON.stringify(validAttachments));
         try {
             const result = await updateProject(editingProject.id, formData);
             if (result?.success) {
@@ -154,6 +178,7 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
                             gallery: editGallery,
                             githubLinks: validLinks,
                             demoUrl: formData.get("demoUrl") as string,
+                            attachments: validAttachments,
                           }
                         : p
                 ));
@@ -248,6 +273,32 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
                                 onChange={(urls) => setGallery(urls)}
                                 onRemove={(url) => setGallery(gallery.filter(g => g !== url))}
                                 label="Gallery / Screenshots (Multiple)" maxFiles={10} />
+                        </div>
+                        
+                        {/* Attachments - Dynamic */}
+                        <div className="space-y-3">
+                            <div className="flex items-center justify-between">
+                                <Label className="text-neutral-300 text-sm">Design System / Documents</Label>
+                                <button type="button" onClick={addAttachment}
+                                    className="flex items-center gap-1 text-xs text-cyan-400 hover:text-cyan-300 transition-colors font-semibold">
+                                    <Plus size={12} /> Add Document
+                                </button>
+                            </div>
+                            {attachments.map((att, idx) => (
+                                <div key={idx} className="space-y-2 p-3 rounded-xl bg-white/[0.02] border border-white/5 relative group">
+                                    <button type="button" onClick={() => removeAttachment(idx)}
+                                        className="absolute top-2 right-2 text-neutral-600 hover:text-red-400 transition-colors">
+                                        <X size={14} />
+                                    </button>
+                                    <Input value={att.name} onChange={(e) => updateAttachment(idx, "name", e.target.value)}
+                                        placeholder="Display Name (e.g. Bahasa Indonesia)"
+                                        className="bg-white/[0.03] border-white/10 text-white text-xs h-8" />
+                                    <FileUpload endpoint="documentUploader" value={att.url} name=""
+                                        onChange={(url) => updateAttachment(idx, "url", url)}
+                                        onRemove={() => updateAttachment(idx, "url", "")}
+                                        label="" />
+                                </div>
+                            ))}
                         </div>
                         {/* GitHub Links - Dynamic */}
                         <div className="space-y-3">
@@ -431,6 +482,32 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
                                     onChange={(urls) => setEditGallery(urls)}
                                     onRemove={(url) => setEditGallery(editGallery.filter(g => g !== url))}
                                     label="Gallery / Screenshots" maxFiles={10} />
+                            </div>
+
+                            {/* Edit Attachments - Dynamic */}
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-between">
+                                    <Label className="text-neutral-300 text-sm">Design System / Documents</Label>
+                                    <button type="button" onClick={addEditAttachment}
+                                        className="flex items-center gap-1 text-xs text-cyan-400 hover:text-cyan-300 transition-colors font-semibold">
+                                        <Plus size={12} /> Add Document
+                                    </button>
+                                </div>
+                                {editAttachments.map((att, idx) => (
+                                    <div key={idx} className="space-y-2 p-3 rounded-xl bg-white/[0.02] border border-white/5 relative group">
+                                        <button type="button" onClick={() => removeEditAttachment(idx)}
+                                            className="absolute top-2 right-2 text-neutral-600 hover:text-red-400 transition-colors">
+                                            <X size={14} />
+                                        </button>
+                                        <Input value={att.name} onChange={(e) => updateEditAttachment(idx, "name", e.target.value)}
+                                            placeholder="Display Name (e.g. Bahasa Indonesia)"
+                                            className="bg-white/[0.03] border-white/10 text-white text-xs h-8" />
+                                        <FileUpload endpoint="documentUploader" value={att.url} name=""
+                                            onChange={(url) => updateEditAttachment(idx, "url", url)}
+                                            onRemove={() => updateEditAttachment(idx, "url", "")}
+                                            label="" />
+                                    </div>
+                                ))}
                             </div>
 
                             {/* GitHub Links */}

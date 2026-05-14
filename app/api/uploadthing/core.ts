@@ -26,6 +26,16 @@ export const ourFileRouter = {
       // !!! whatever is returned here is sent to the clientside onUploadComplete callback
       return { uploadedBy: "Admin", url: file.url };
     }),
+  documentUploader: f({ 
+    pdf: { maxFileSize: "8MB", maxFileCount: 1 },
+    blob: { maxFileSize: "8MB", maxFileCount: 1 }
+  })
+    .middleware(async () => {
+      return { };
+    })
+    .onUploadComplete(async ({ file }) => {
+      return { url: file.url, name: file.name };
+    }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;
