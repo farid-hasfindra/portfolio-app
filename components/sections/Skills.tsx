@@ -38,7 +38,7 @@ export function Skills({ skills }: { skills: Skill[] }) {
                         My Skills
                     </h2>
                     <p className="mt-2 text-neutral-500 text-sm md:text-base max-w-2xl mx-auto font-medium">
-                        Modern technologies or tools that I have mastered and that I am currently studying to develop a powerful AI system
+                        Modern technologies or tools that I have mastered and that I am currently studying to develop a powerful AI & Data systems.
                     </p>
                 </motion.div>
 
