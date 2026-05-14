@@ -45,6 +45,8 @@ interface ProjectItem {
     tags: string[];
     image: string;
     gallery: string[];
+    githubLinks: GithubLink[];
+    demoUrl: string;
     attachments: Attachment[];
     order: number;
 }
